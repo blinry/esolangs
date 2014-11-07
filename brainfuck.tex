@@ -1,0 +1,40 @@
+\subsection{History}
+
+\blindtext
+
+\subsection{Description}
+
+A Brainfuck program operates on a linear arrangement of memory cells, each of which can hold a number between 0 and 255.
+
+The following commands are defined:
+
+\begin{tabular}{r|l}
+    Symbol & Effect\\
+    \hline
+    \texttt{>} & Move the memory pointer to the right\\
+    \texttt{<} & Move the memory pointer to the left\\
+    \texttt{+} & Increase the current memory cell's value\\
+    \texttt{-} & Decrease the current memory cell's value\\
+    \texttt{.} & Output the current memory cell's value as an ASCII character\\
+    \texttt{,} & Read an ASCII character from the user, write it to the current memory cell\\
+    \texttt{[} & If the current cell contains a 0, skip to the matching closing bracket\\
+    \texttt{]} & If the current cell does not contain a 0, return to the matching opening bracket\\
+\end{tabular}
+
+Using the brackets, the programmer can realize a \texttt{while}-loop: The expression
+
+\begin{quotation}
+    \texttt{[}<code>\texttt{]}
+\end{quotation}
+
+will execute <code> until the current cell is empty.
+
+\subsection{Example}
+
+\lstinputlisting[frame=tbrl,basicstyle=\ttfamily\footnotesize]{../langs/brainfuck/readprint.brainfuck}
+
+\blindtext
+
+\subsection{Variants}
+
+\blindtext

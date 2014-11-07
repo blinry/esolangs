@@ -5,9 +5,10 @@
 \usepackage{blindtext}
 \usepackage{microtype}
 \usepackage{filecontents}
+\usepackage{listings}
 
 \title{Esoteric Programming Languages}
-\subtitle{A journey to Brainfuck, Befunge, INTERCAL and Malbolge}
+\subtitle{A strange journey to Brainfuck, Befunge, INTERCAL and Malbolge}
 \numberofauthors{1}
 \author{\alignauthor Sebastian Morr\\\email{sebastian@morr.cc}}
 
@@ -19,53 +20,50 @@
 \maketitle
 
 \begin{abstract}
-    This paper describes four common esoteric languages, which all have formed their own language category.
+    This paper highlights four popular languages.
 \end{abstract}
 
 \section{Introduction}
 
-max 1 column
+In contrast for “normal” programming languages, which are designed and used with the hope to be productive and helpful, esoteric programming languages serve other goals:
 
-motivation
+They can be proof-of-concepts
 
-general approach/outline
+They might be an art form
+
+Or the might be designed as a kind of sport, a challenge for the language designer.
+
+There are joke languages designed to enjoy the authors themselves, the users, or even the readers of the specification.
+
+The term was coined by xxx in 1960. The term “esoteric” stems from xxx.
+
+For this paper, I picked four well-known esoteric programming languages, that each demonstrate a unique property commonly found in other esoteric languages:
+
+\textbf{Brainfuck} attempts to have a \textit{minimal} syntax, which consists only of eight different characters. Nevertheless, it can be shown to be Turing-complete. The author(s) of \textbf{INTERCAL} attempted to create a \textit{weird} language, that differed from other languages known at that time in as many aspects as possible. \textbf{Befunge} is a \textit{two-dimensional} lanuguage, the user can use directional commands to control the program flow. Finally, \textbf{Malbolge} was designed to be as hard as possible to use, it took two years to write the first program.
+
+For each language, I'm going to describe it's origins, history, and nowadays significance, explain how the language works, give an interesting example and mention some popular variants.
 
 \section{Brainfuck}
 
-One of the most notable esoteric programming language, 
+\input{brainfuck.tex}
 
-\subsection{History}
+\section{INTERCAL}
 
-\blindtext[1]
-
-\subsection{Description}
-
-\blindtext[1]
-
-\subsection{Example}
-
-\blindtext[1]
-
-\subsection{Variants}
-
-\blindtext[1]
-
-\section{\textsc{INTERCAL}}
-
+\input{intercal.tex}
 
 \section{Befunge}
 
+\input{befunge.tex}
 
 \section{Malbolge}
 
-\section{Evaluation}
+\input{malbolge.tex}
 
-report experience
-
-
-comparizon + categorization
+\section{Further languages}
 
 \section{Discussion}
+
+\blindtext[3]
 
 interpret results
 
@@ -74,9 +72,6 @@ advantages / disadvantages
 \section{Conclusion}
 
 \blindtext[2]
-
-\cite{why05}
-\cite{google13}
 
 \bibliographystyle{abbrv}
 \bibliography{references}
