@@ -1,16 +1,40 @@
 \documentclass{sig-alternate}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{lmodern}%lighttt
 
+\usepackage{enumitem}
 \usepackage{blindtext}
 \usepackage{microtype}
+    \DisableLigatures[<,>]{family=tt*}
 \usepackage{filecontents}
 \usepackage{listings}
+    \lstset{
+        numbers=left,
+        numberstyle=\tiny,
+        frame=tbrl,
+        basicstyle=\ttfamily\small
+        %aboveskip=10pt,
+        %belowskip=10pt,
+        %literate={`}{\`}1,
+    }
+\usepackage{tabularx}
+\usepackage{xcolor}
+    \definecolor{medium-blue}{rgb}{0,0,0.5}
+\usepackage{hyperref}
+    \hypersetup{
+        colorlinks, linkcolor={medium-blue},
+        citecolor={medium-blue}, urlcolor={medium-blue}
+    }
+\usepackage[style=numeric]{biblatex}
+    \addbibresource{references.bib}
+\usepackage[nameinlink]{cleveref}
 
 \title{Esoteric Programming Languages}
-\subtitle{A strange journey to Brainfuck, Befunge, INTERCAL and Malbolge}
+\subtitle{A weird journey to Brainfuck, Shakespeare, Befunge, INTERCAL and Malbolge}
+%\subtitle{\textit{\large We are not really esoteric, it's just that nobody pays much attention to us.}}
 \numberofauthors{1}
-\author{\alignauthor Sebastian Morr\\\email{sebastian@morr.cc}}
+\author{\alignauthor Sebastian Morr\\\affaddr{Technical University Braunschweig, Germany}\\\email{sebastian@morr.cc}}
 
 \makeatletter
 \def\@copyrightspace{\relax}
@@ -20,60 +44,73 @@
 \maketitle
 
 \begin{abstract}
-    This paper highlights four popular languages.
+    There is this class of programming languages that are not designed to be used for programming. These so-called “esoteric” programming languages have other purposes instead: To entertain, to be beautiful, or to make a point.
+
+    This paper describes and contrasts five stereotypical, widely different esoteric programming languages: Brainfuck, Shakespeare, Befunge, INTERCAL and Malbolge.
 \end{abstract}
 
 \section{Introduction}
 
-In contrast for “normal” programming languages, which are designed and used with the hope to be productive and helpful, esoteric programming languages serve other goals:
+While programming languages are normally designed to be used productively and being helpful in real-world applications, esoteric programming languages have other goals:
 
-They can be proof-of-concepts
+They can be proof-of-concepts, demonstrating how minimal a language syntax can get, while still maintainig an universal character. They might help to prove mathematical theorems or provide bounds in complexity analyses. The design of esoteric programming languages can be seen an art form, and be an expression of human intellect, wit, and asthetic taste. Or they might be created as a kind of competitive sport, a challenge for the language's designer or for its users. Finally, there are joke languages designed to enjoy the authors themselves, the users, or even the readers of the specification.
 
-They might be an art form
+The term “esoteric” stems from the ancient greek \emph{esoterikos}, meaning “belonging to an inner circle”, and originally referred to Phythagoras' secret teachings. It evolved to mean “mystic”, or “having to do with highly theoretical concepts without obvious practical application”. The first usage of the term “esoteric” in the context of “weird programming languages” was probably on a web site called \emph{Esoteric Topics in Computer Programming}, published by Chris Pressey, inventor of Befunge, around 1997 \cite{pressey2005chris}.
 
-Or the might be designed as a kind of sport, a challenge for the language designer.
+For this paper, I picked four well-known esoteric programming languages, that each demonstrate a unique property commonly found in other esoteric languages: \textbf{Brainfuck} attempts to have a \textit{minimal} syntax, which consists only of eight different characters. Nevertheless, it can be shown to be Turing-complete. \textbf{Shakespeare} requires its programs to look like Shakespearean plays, making it a \textit{themed} language. The author(s) of \textbf{INTERCAL} attempted to create a \textit{weird} language, that differed from other languages known at that time in as many aspects as possible. \textbf{Befunge} is a \textit{two-dimensional} lanuguage, the user can use directional commands to control the program flow. Finally, \textbf{Malbolge} was designed to be as hard as possible to use, it took two years to write the first program.
 
-There are joke languages designed to enjoy the authors themselves, the users, or even the readers of the specification.
+For each language, we are going to look at it's origins, history, and nowadays significance, explain how the language works, give an interesting example and mention some popular variants.
 
-The term was coined by xxx in 1960. The term “esoteric” stems from xxx.
+\section{Preliminaries}
 
-For this paper, I picked four well-known esoteric programming languages, that each demonstrate a unique property commonly found in other esoteric languages:
+We first define some terms which are relevant when discussing esoteric programming languages.
 
-\textbf{Brainfuck} attempts to have a \textit{minimal} syntax, which consists only of eight different characters. Nevertheless, it can be shown to be Turing-complete. The author(s) of \textbf{INTERCAL} attempted to create a \textit{weird} language, that differed from other languages known at that time in as many aspects as possible. \textbf{Befunge} is a \textit{two-dimensional} lanuguage, the user can use directional commands to control the program flow. Finally, \textbf{Malbolge} was designed to be as hard as possible to use, it took two years to write the first program.
+\subsection{Turing machines}
 
-For each language, I'm going to describe it's origins, history, and nowadays significance, explain how the language works, give an interesting example and mention some popular variants.
+\cite{turing1937computable}
 
+\subsection{Turing completeness}
+
+Systems are called \emph{Turing complete}, if they can be used to simulate universal Turing machines.
+
+
+Most general-purpose programming languages are Turing complete, but not all esoteric programming languages are, which makes it interesting to look at this property.
+
+\subsection{Turing tarpit}
+
+The language is an example of a so-called \emph{Turing tarpit}. This term was coined in 1992 by Alan Perlis, first recipient of the Turing Award, who warned against environments “in which everything is possible but nothing of interest is easy” \cite{perlis1982epigrams}, in reference to geologic asphalt lakes, whose thick consistency slows down movements for everything inside. Turing tarpit languages, like Brainfuck, provide a handful of very general and flexible mechanisms, which can be used to write \emph{any} program, but it is seldomly pratical to do so, because the languages provide so little abstraction that the programs get very long or complicated.
+
+\newpage
 \section{Brainfuck}
 
 \input{brainfuck.tex}
 
+\newpage
+\section{Shakespeare}
+
+\input{shakespeare.tex}
+
+\newpage
 \section{INTERCAL}
 
 \input{intercal.tex}
 
+\newpage
 \section{Befunge}
 
 \input{befunge.tex}
 
+\newpage
 \section{Malbolge}
 
 \input{malbolge.tex}
 
-\section{Further languages}
-
-\section{Discussion}
-
-\blindtext[3]
-
-interpret results
-
-advantages / disadvantages
+\newpage
 
 \section{Conclusion}
 
-\blindtext[2]
+\blindtext[5]
 
-\bibliographystyle{abbrv}
-\bibliography{references}
+\printbibliography
 
 \end{document}

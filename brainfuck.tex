@@ -1,25 +1,37 @@
+Brainfuck is a well-known example of a minimalistic programming language, aiming for a small language syntax and small compilers. Its programs consist of only eight characters, nevertheless, it was proven to be Turing-complete.
+
 \subsection{History}
 
-\blindtext
+Brainfuck was designed by Urban Müller, a Swiss physics student who in 1992 took over a small online archive for Amiga software \cite{muller1993aminet}. Back than it saw around 40 users per day, today it is the world's largest Amiga archive.
+
+In 1993, Müller uploaded the first Brainfuck compiler on this platform \cite{muller1993240}, in the form of a machine language implementation compiling into an executable of 296 bytes. Along with it came a README with a concise language description and the sentence “Who can program anything useful with it?~:)”, and it included some quite elaborate examples, as well.
+
+% spread
+
+Brainfuck was first proven turing complete by xxx
+
+Nowadays, Brainfuck is probably the best-known esoteric programming language. It is a common programming exercise to implement a Brainfuck compiler in another language (although people also have written Brainfuck compilers in Brainfuck itself).
 
 \subsection{Description}
 
-A Brainfuck program operates on a linear arrangement of memory cells, each of which can hold a number between 0 and 255.
+In it's setup, Brainfuck bears some similarities to Turing machines:
 
-The following commands are defined:
+A Brainfuck program operates on an infinite linear arrangement of memory cells, often called \emph{tape}. Each memory cell contains an unsigned byte (a number between 0 and 255), at the beginning of the program, all cells are initialized to 0. Additionally, Brainfuck maintains a pointer to one of the memory cells.
 
-\begin{tabular}{r|l}
-    Symbol & Effect\\
-    \hline
-    \texttt{>} & Move the memory pointer to the right\\
-    \texttt{<} & Move the memory pointer to the left\\
-    \texttt{+} & Increase the current memory cell's value\\
-    \texttt{-} & Decrease the current memory cell's value\\
-    \texttt{.} & Output the current memory cell's value as an ASCII character\\
-    \texttt{,} & Read an ASCII character from the user, write it to the current memory cell\\
-    \texttt{[} & If the current cell contains a 0, skip to the matching closing bracket\\
-    \texttt{]} & If the current cell does not contain a 0, return to the matching opening bracket\\
-\end{tabular}
+The program source code consists of a sequence of eight symbols, which are defined as follows:
+
+\begin{description}[labelsep=1em]
+    \item[\texttt{>}] Move the pointer to the right.
+    \item[\texttt{<}] Move the pointer to the left.
+    \item[\texttt{+}] Increment the current cell's value by 1.
+    \item[\texttt{-}] Decrement the current cell's value by 1.
+    \item[\texttt{.}] Output the current cell's value as an ASCII character.
+    \item[\texttt{,}] Read an ASCII character from the user, write its value to the current cell.
+    \item[\texttt{[}] If the current cell contains a 0, skip to the matching closing bracket.
+    \item[\texttt{]}] If the current cell does not contain a 0, return to the matching opening bracket.
+\end{description}
+
+Other characeters in the source code are ignored (which allows for inline documentation). While in- or decrementing, the cells' values always wrap to stay inside the range of 0 to 255.
 
 Using the brackets, the programmer can realize a \texttt{while}-loop: The expression
 
@@ -27,14 +39,71 @@ Using the brackets, the programmer can realize a \texttt{while}-loop: The expres
     \texttt{[}<code>\texttt{]}
 \end{quotation}
 
-will execute <code> until the current cell is empty.
+will execute <code> until the current cell is 0. For example, the expression
 
-\subsection{Example}
+\begin{quotation}
+    \texttt{[->+<]}
+\end{quotation}
 
-\lstinputlisting[frame=tbrl,basicstyle=\ttfamily\footnotesize]{../langs/brainfuck/readprint.brainfuck}
+will add the current cell's value to the right neighbouring cell by decrementing the current cell by one, going right, incrementing by one, going left again. This sequence is repeated until the current cell is 0.
 
-\blindtext
+\subsection{Examples}
+
+The following program reads a sequence of ASCII values from the user, and prints their binary representation. Line 1 creates the basic memory layout, which is restored for each character. Line 4 reads the character, lines 5--13 implement a shift register. The remaining lines print the binary digits, by calculating the digits' ASCII values (48 or 49), and finally restore the memory layout. Note that the digits 0 and 1 are stored as 1 and 2 in memory, to be able to seek over all digits with a while loop. If the program stored the digit 0 as a 0 in memory, it would be indifferentiable from the end of the array, and the loops would stop there.
+
+%more
+
+\lstinputlisting{brainfuck/ascii.b}
+
+Input: \texttt{hello}
+
+Output: \texttt{0110100001100101011011000110110001101111}
 
 \subsection{Variants}
 
-\blindtext
+The esolangs wiki xxxref lists 162 articles in the “Brainfuck derivatives” category and 33 “Brainfuck equivalents”, which were all inspired by Müller's original implementation. There are variants which operate on two tapes, restrict the cells to binary values (thus making the \texttt{+} and \texttt{-} operations identical), xxx references
+
+Because of Müller's informal language definition, the various compiler implementations differ in various aspects:
+
+While the general idea assumes an infinitely long tape, actual implementations of course have some kind of memory limit. The original compiler uses a tape of 30,000 cells, with the pointer starting on the leftmost one. Some implementations extend the memory array when the pointer steps out of the allocated range, others crash, others again will wrap around.
+
+The size of one cell was one byte in the original implementation, wrapping around to 255 when subtracting from 0, and many implementations follow that design. Others use 16- or 32-bit numbers, or signed values, allowing negative numbers.
+
+Another implementation difference is about what happens when a Brainfuck programs wants to read a byte, but there is no more input---for example, because the input was a file which has reached the end-of-file condition. In many applications, it is interesing to know that there will be no more input. Müller's implementation leaves the current cell unchanged in this case, others set it to 0, others to -1 (this requires cells which are larger than bytes).
+
+Interestingly, Brainfuck had a much earlier predecessor: In 1964, the xxx Corrado Böhm designed the language $\mathcal{P}''$ \cite{bohm1964family}. Programs in $\mathcal{P}''$ consist of word over the alphabet $\{R, \lambda, (, )\}$.
+Böhm proved this language to be Turing-complete long before Brainfuck was implemented.
+
+$\mathcal{P}''$ operates on a left-infinite tape, which can contain symbols of an alphabet $\{a_0, a_1, \dots, a_n\}$. Initially, each memory cell contains $a_0$, the \emph{blank symbol}. The symbols' semantics are as follows:
+
+\begin{description}
+    \item[\boldmath$R$] Move the memory pointer to the right.
+    \item[\boldmath$\lambda$] Increase the current symbol, then move the memory pointer to the left.
+    \item[\boldmath$(q)$] Repeat $q$ while the current symbol does not equal the blank symbol.
+\end{description}
+
+Each Brainfuck program can be translated  to a $\mathcal{P}''$ program using the following equivalents:
+\begin{align*}
+    \text{\texttt{+}} &\rightarrow r = \lambda R &\text{(increase and move left, then move right)}\\
+    \text{\texttt{-}} &\rightarrow r' = \overbrace{rrr\dots r}^n &\text{(the symbol will “wrap around”)}\\
+    \text{\texttt{>}} &\rightarrow R\\
+    \text{\texttt{<}} &\rightarrow r'\lambda &\text{(“decrement” the cell, then $\lambda$)}\\
+    \text{\texttt{[}} &\rightarrow (\\
+    \text{\texttt{]}} &\rightarrow )
+\end{align*}
+
+% turing-completeness
+
+Note that $\mathcal{P}''$ only has four operators. So called \emph{one instruction set computers} (OISC) go even further, by reducing the number of operations to one. A common example is the “subtract and branch if less than or equal to zero” operation, also known as \texttt{subleq}. It takes three memory pointers $a$, $b$ and $c$ as its operands, subtracts the value at $a$ from the value at $b$, writes the result back to $b$ and jumps to $c$ if it is not positive. One can synthezise all other operators from this single one, for example, an unconditional jump:
+
+\begin{lstlisting}
+subleq a a c // jump to c, a-a is always 0
+\end{lstlisting}
+
+or addition:
+
+\begin{lstlisting}
+subleq c c 2 // c = 0 go to the next line
+subleq a c 3 // c' = c-a = -a
+subleq c b 4 // b = b-c' = a+b
+\end{lstlisting}
