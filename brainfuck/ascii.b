@@ -3,7 +3,7 @@
                \_____ a _____/   b   c
 
                a: bits to be calculated
-               b: sentinel
+               b: sentinel (current cell)
                c: cell for user input
 
 [              In an endless loop:
@@ -18,10 +18,10 @@
   ]
   <<<<<<<<<    Seek to the first digit
   +[-          Until we're back at 255:
-               Increment the cell by 48, by
-    <++++++++    putting an 8 in the prev. cell
-    [            and decrementing our cell by 6
-      -          that many times
+               Increment the cell by 48 by
+    <++++++++    putting an 8 in the previous
+    [            cell and decrementing our cell
+      -          by 6 that many times
       >++++++<
     ]
     >.         Print its ASCII value
