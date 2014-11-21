@@ -9,15 +9,21 @@
     \DisableLigatures[<,>]{family=tt*}
 \usepackage{filecontents}
 \usepackage{listings}
-    \lstset{
+    \lstset{frame=tbrl,
         numbers=left,
         numberstyle=\tiny,
-        frame=tbrl,
         basicstyle=\ttfamily\small
         %aboveskip=10pt,
         %belowskip=10pt,
         %literate={`}{\`}1,
     }
+    \lstnewenvironment{io}{\lstset{
+        numbers=none,
+        frameround=tttt,
+        basicstyle=\sffamily,
+        columns=fullflexible,
+        escapechar=!
+    }}{}
 \usepackage{tabularx}
 \usepackage{xcolor}
     \definecolor{medium-blue}{rgb}{0,0,0.5}
@@ -26,9 +32,10 @@
         colorlinks, linkcolor={medium-blue},
         citecolor={medium-blue}, urlcolor={medium-blue}
     }
-\usepackage[style=numeric]{biblatex}
+\usepackage[style=numeric,sorting=none]{biblatex}
     \addbibresource{references.bib}
 \usepackage[nameinlink]{cleveref}
+\usepackage[framemethod=TikZ]{mdframed}
 
 \title{Esoteric Programming Languages}
 \subtitle{A weird journey to Brainfuck, Shakespeare, Befunge, INTERCAL and Malbolge}
@@ -55,7 +62,7 @@ While programming languages are normally designed to be used productively and be
 
 They can be proof-of-concepts, demonstrating how minimal a language syntax can get, while still maintainig an universal character. They might help to prove mathematical theorems or provide bounds in complexity analyses. The design of esoteric programming languages can be seen an art form, and be an expression of human intellect, wit, and asthetic taste. Or they might be created as a kind of competitive sport, a challenge for the language's designer or for its users. Finally, there are joke languages designed to enjoy the authors themselves, the users, or even the readers of the specification.
 
-The term “esoteric” stems from the ancient greek \emph{esoterikos}, meaning “belonging to an inner circle”, and originally referred to Phythagoras' secret teachings. It evolved to mean “mystic”, or “having to do with highly theoretical concepts without obvious practical application”. The first usage of the term “esoteric” in the context of “weird programming languages” was probably on a web site called \emph{Esoteric Topics in Computer Programming}, published by Chris Pressey, inventor of Befunge, around 1997 \cite{pressey2005chris}.
+The term “esoteric” stems from the ancient greek \emph{esoterikos}, meaning “belonging to an inner circle”, and originally referred to Phythagoras' secret teachings. ref It evolved to mean “mystic”, or “having to do with highly theoretical concepts without obvious practical application”. The first usage of the term “esoteric” in the context of “weird programming languages” was probably on a web site called \emph{Esoteric Topics in Computer Programming}, published by Chris Pressey, inventor of Befunge, around 1997 \cite{pressey2005chris}.
 
 For this paper, I picked four well-known esoteric programming languages, that each demonstrate a unique property commonly found in other esoteric languages: \textbf{Brainfuck} attempts to have a \textit{minimal} syntax, which consists only of eight different characters. Nevertheless, it can be shown to be Turing-complete. \textbf{Shakespeare} requires its programs to look like Shakespearean plays, making it a \textit{themed} language. The author(s) of \textbf{INTERCAL} attempted to create a \textit{weird} language, that differed from other languages known at that time in as many aspects as possible. \textbf{Befunge} is a \textit{two-dimensional} lanuguage, the user can use directional commands to control the program flow. Finally, \textbf{Malbolge} was designed to be as hard as possible to use, it took two years to write the first program.
 
@@ -67,14 +74,15 @@ We first define some terms which are relevant when discussing esoteric programmi
 
 \subsection{Turing machines}
 
-\cite{turing1937computable}
+In his 1937 paper \cite{turing1937computable}, Alan Turing defined a simple machine that defines “computing”. It consists of an infinite onedimensional tape with cells that can hold symbols, a head which moves over the tape and can read and write symbols, and a finite state machine, which specifies what to do when a specific symbol is read. This simple architecture is so mighty that it can simulate all other models of computers, and thus is able to compute every computable sequence.
+
+In fact, one construct a Turing machine that reads a description of another Turing machine, plus some input, and then simulates that other machine, this is what we call a \emph{universal Turing machine}.
 
 \subsection{Turing completeness}
 
-Systems are called \emph{Turing complete}, if they can be used to simulate universal Turing machines.
+Systems are called \emph{Turing complete}, if they can be used to simulate universal Turing machines. These systems are as mighty as the class of Turing machines, meaning they can compute any computable sequence.
 
-
-Most general-purpose programming languages are Turing complete, but not all esoteric programming languages are, which makes it interesting to look at this property.
+Turing completeness is an important property of omnipotent programming languages. It is highly probable that all modern general-purpose programming languages are Turing complete, but not all esoteric programming languages are, which makes it interesting to look at this property.
 
 \subsection{Turing tarpit}
 

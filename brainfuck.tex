@@ -6,11 +6,11 @@ Brainfuck was designed by Urban Müller, a Swiss physics student who in 1992 too
 
 In 1993, Müller uploaded the first Brainfuck compiler on this platform \cite{muller1993240}, in the form of a machine language implementation compiling into an executable of 296 bytes. Along with it came a README with a concise language description and the sentence “Who can program anything useful with it?~:)”, and it included some quite elaborate examples, as well.
 
-% spread
+As Aminet grew, the compiler became popular amongst the Amiga community, and was later implemented for other platforms. Some thourough sources of information about Brainfuck are ref ref ref.
 
-Brainfuck was first proven turing complete by xxx
+Brainfuck was proven turing complete by Daniel Cristofani \cite{cristofani-universal}, by implementing a simple universal Turing machine described by Yurii Rogozhin \cite{rogozhin1996small}.
 
-Nowadays, Brainfuck is probably the best-known esoteric programming language. It is a common programming exercise to implement a Brainfuck compiler in another language (although people also have written Brainfuck compilers in Brainfuck itself).
+Nowadays, Brainfuck is probably the best-known esoteric programming language. It is a common programming exercise to implement a Brainfuck compiler in another language (although people also have written Brainfuck compilers in Brainfuck itself). Fans of the language succeded to implement even smaller compilers than the original version, the smallest one is a MS-DOS binary only 98 bytes large \cite{inte1999entry}.
 
 \subsection{Description}
 
@@ -47,21 +47,35 @@ will execute <code> until the current cell is 0. For example, the expression
 
 will add the current cell's value to the right neighbouring cell by decrementing the current cell by one, going right, incrementing by one, going left again. This sequence is repeated until the current cell is 0.
 
+Another gadget which we will use in the following example is
+
+\begin{quotation}
+    \texttt{+[->+]-}
+\end{quotation}
+
+which moves to the right until the current cell's value is 255. The \texttt{+} operators increment the value before each check, so that the loop will terminate when we create a 0 that way. The \texttt{-} operators reset it to it' original value before the cell or the construct ist left again.
+
 \subsection{Examples}
 
-The following program reads a sequence of ASCII values from the user, and prints their binary representation. Line 1 creates the basic memory layout, which is restored for each character. Line 4 reads the character, lines 5--13 implement a shift register. The remaining lines print the binary digits, by calculating the digits' ASCII values (48 or 49), and finally restore the memory layout. Note that the digits 0 and 1 are stored as 1 and 2 in memory, to be able to seek over all digits with a while loop. If the program stored the digit 0 as a 0 in memory, it would be indifferentiable from the end of the array, and the loops would stop there.
+The following program reads a sequence of ASCII values from the user, and prints their binary representation. In order to be able to appreciate Brainfuck's unique asthetics, it is first given in minified form:
 
-%more
+\lstinputlisting{brainfuck/ascii-min.b}
+
+\begin{io}
+Input: !\texttt{hello}!
+Output: !\texttt{0110100001100101011011000110110001101111}!
+\end{io}
+
+Let's look at it in more detail. The following commented version, can be broken down into three basic parts: Line 1 sets up the basic memory layout, which is restored for each character the user enters. The programs uses a “sentinel” cell with the special value 255 to facilitate seeking back to the end of the bit array. Line 10 reads the character, lines 11--18 implement a simple shift register to calculate the binary representation. The remaining lines print the binary digits, by calculating the digits' ASCII values (48 or 49), and finally restore the memory layout. Note that lines 21---25 could be replaced with \texttt{++++++++++++++++++++++++++++++++++++++++++++++++}, which would increment the cell's value by 48, but we wanted to demonstrate a more esoteric (and more concise) approach here, which is why the actual code increases the value by 6 eight times.
 
 \lstinputlisting{brainfuck/ascii.b}
 
-Input: \texttt{hello}
-
-Output: \texttt{0110100001100101011011000110110001101111}
-
 \subsection{Variants}
 
-The esolangs wiki xxxref lists 162 articles in the “Brainfuck derivatives” category and 33 “Brainfuck equivalents”, which were all inspired by Müller's original implementation. There are variants which operate on two tapes, restrict the cells to binary values (thus making the \texttt{+} and \texttt{-} operations identical), xxx references
+The esolangs wiki \cite{esolang}, a large database of esoteric programming topics, and informal successor of Chris Pressey's Esoteric Topics site, lists 162 articles in the “Brainfuck derivatives” category and 33 “Brainfuck equivalents”, which were all inspired by Müller's original implementation. There are variants which operate on two tapes (\textbf{DoubleFuck}), restrict the cells to binary values, thus making the \texttt{+} and \texttt{-} operations identical (\textbf{Boolfuck}). Some add more operators (like \textbf{Brainfork}, which adds a \texttt{Y} command for forking the process), others try to reduce the command set even further (\textbf{BitChanger} also works on bit cells and defines \texttt{\}} $=$ \texttt{>+}. The effect of the original \texttt{>} can be simulated with \texttt{\}<\}}).
+The joke variant \textbf{Ook!} behaves exactly like Brainfuck, but it's operators are pairs of Orangutan words like “Ook. Ook?” for \texttt{>} or “Ook! Ook!” for \texttt{-}.
+
+xxx references
 
 Because of Müller's informal language definition, the various compiler implementations differ in various aspects:
 
@@ -71,8 +85,7 @@ The size of one cell was one byte in the original implementation, wrapping aroun
 
 Another implementation difference is about what happens when a Brainfuck programs wants to read a byte, but there is no more input---for example, because the input was a file which has reached the end-of-file condition. In many applications, it is interesing to know that there will be no more input. Müller's implementation leaves the current cell unchanged in this case, others set it to 0, others to -1 (this requires cells which are larger than bytes).
 
-Interestingly, Brainfuck had a much earlier predecessor: In 1964, the xxx Corrado Böhm designed the language $\mathcal{P}''$ \cite{bohm1964family}. Programs in $\mathcal{P}''$ consist of word over the alphabet $\{R, \lambda, (, )\}$.
-Böhm proved this language to be Turing-complete long before Brainfuck was implemented.
+Interestingly, Brainfuck had a much earlier predecessor: In 1964, the theroretical computer scientist Corrado Böhm designed the language $\mathcal{P}''$, to describe a specific family of Turing machines \cite{bohm1964family}. Programs in $\mathcal{P}''$ consist of word over the alphabet $\{R, \lambda, (, )\}$. Böhm showed that this language was Turing-complete long before Brainfuck was implemented.
 
 $\mathcal{P}''$ operates on a left-infinite tape, which can contain symbols of an alphabet $\{a_0, a_1, \dots, a_n\}$. Initially, each memory cell contains $a_0$, the \emph{blank symbol}. The symbols' semantics are as follows:
 
@@ -91,8 +104,6 @@ Each Brainfuck program can be translated  to a $\mathcal{P}''$ program using the
     \text{\texttt{[}} &\rightarrow (\\
     \text{\texttt{]}} &\rightarrow )
 \end{align*}
-
-% turing-completeness
 
 Note that $\mathcal{P}''$ only has four operators. So called \emph{one instruction set computers} (OISC) go even further, by reducing the number of operations to one. A common example is the “subtract and branch if less than or equal to zero” operation, also known as \texttt{subleq}. It takes three memory pointers $a$, $b$ and $c$ as its operands, subtracts the value at $a$ from the value at $b$, writes the result back to $b$ and jumps to $c$ if it is not positive. One can synthezise all other operators from this single one, for example, an unconditional jump:
 
