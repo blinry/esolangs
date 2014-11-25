@@ -1,17 +1,51 @@
-\subsection{History}
+\subsection{Origins}
 
-\blindtext[5]
+The Shakespeare Programming Language (SPL, but we will refer to it here as “Shakespeare”) was created by Karl Hasselström and Jon Åslund in 2001 who were studying at the Royal Institute of Technology in Stockholm at the time. According to the documentation \cite{...}, the authors were given an assignment in their university class that involved lexical and syntactical analysis. They knew and liked Brainfuck and Malboge, and so designed and implemented a language that resembled Shakespearian plays.
+
+They didn't implement a compiler, but the compiler output C code instead
+%http://www.computerworld.com.au/article/391510/a-z_programming_languages_shakespeare/?pp=2
+
+According to the authors, Shakespeare “combines the expressiveness of BASIC with the user-friendliness of assembly language”.
 
 \subsection{Description}
 
-\blindtext[5]
+The text up to the first period is the program's title. It has no meaning.
+
+The next section is a list of all characters in the play, which is Shakespeare's way of declaring variables. A declaration consists of a name (which must be an actual character in one of Shakespeare's plays, followed by a description.
+
+The play is divided into acts and scenes, which are numbered with roman numerals. The numerals act as labels which can be jumped to using goto statements.
+
+There is a group of statements that make the characters enter or leave the stage, that is, \texttt{[Enter/Exit} <character>\texttt{]}.
+
+Characters can talk to each other when they are on the stage.
+
+Any noun represents an integer, either a 1 (if it is a “nice” noun, like “flower” xxx or a neutral one like “chair”), or a -1 (if it isn't, like “politician” xxx). Nouns can be prefixed with adjectives, each multiplying its value by two.
+
+Statements like “You are ...” assign values to the other character on stage. The sentences “Open your heart” and “Speak your mind” are used to output the other character's numerical value, respectively it's correspondent ASCII character. “Listen to your heart” and “Open your mind” can be used to read a number/character to the other character on stage.
+
+There are goto statements like “Let us proceed to act II”, and conditional statements, which consists of a comparative question and a “If so/not, ...”.
+
+Finally, each character has a stack of numbers. A character can push its value onto the stack of another with “Remember me”, and pop it with “Recall ...”.
 
 \subsection{Example}
 
-%\lstinputlisting[frame=tbrl,basicstyle=\ttfamily\footnotesize]{../langs/befunge/fibonacci.bf}
+\lstinputlisting{shakespeare/fibonacci.spl} % TODO remove "use"
 
-\blindtext[5]
+\begin{io}
+Output:
+1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584
+4181 6765 10946 17711 28657 46368 75025 121393 196418
+317811 514229 832040 1346269 2178309 3524578
+\end{io}
 
 \subsection{Variants}
 
 \blindtext[3]
+
+\subsection{Significance}
+
+%Spread
+
+%http://developers.slashdot.org/story/01/08/31/1126253/the-shakespeare-programming-language
+
+In the late xxx, they were asked by David Touretzky whether they would implement DeCSS in Shakespeare, a software used to decrypt DVDs which was forbidden by xxx. A performance of such a program would be protected by free speech laws and could have benn legally exported to other countries \cite{herrick2011az}. While they didn't do this because of time reasons, this example demonstrates Shakespeare's versality. In fact, in the keynote of ACM's third \emph{History of Programming Languages conference} in 2007, Guy Steele and Richard Gabriel featured a recorded performance of an actual Shakespeare program that outputs factors of two \cite{chapiewski2007computational}.
