@@ -6,7 +6,7 @@ Malbolge was created in 1998 by Ben Olmstead, an Amerian student at the Colorado
 
 The language's name stems from an epic poem of the Italian poet Dante, \emph{Divina Commedia}, whose first part describes the main characters's descent into the circles of Hell. The eighth circle is reserved for sinners who committed conscious fraud or treachery, and is called Malebolge (which roughly translates from Italian to “evil pockets”). It is one of the most unpleasant places to be in Dante's description of Hell, and the people in it are punished for all eternity.
 
-When publishing the specification, Olmstead had not managed to write a single Malbolge program, except from a trivial one that exited immediately. The first nontrivial program was written by Andrew Cooke in 2000, two years after the specification was published. It prints \texttt{HEllO WORld} \cite{cooke2000malbolge} and was found by an extensive search algorithm. For details, refer to the “Example” section below.
+When publishing the specification, Olmstead had not managed to write a single Malbolge program, except from a trivial one that exited immediately. The first nontrivial program was written by Andrew Cooke in 2000, two years after the specification was published. It prints \texttt{HEllO WORld} \cite{cooke2000malbolge} and was found by an extensive search algorithm. For details, refer to \cref{malbolge-example}.
 
 The first program that contained loops and aborting conditions was writtten in 2005 by Hisashi Iizawa \cite{iizawa2005malbolge}. It is 22,561 characters long and is an implementation of the standard program “99 bottles of beer”.
 
@@ -47,7 +47,7 @@ For example, a result of 0 would yield a \texttt{+} character, and result of 1 w
     \item[\texttt{o}] Does nothing.
 \end{description}
 
-All other characters do the same as \texttt{o}: Nothing. The difference is that they are allowed when the program is running, but not when it is loaded. After the instruction was executed, $[C]$ is reduced by 33, andii then is encrypted using a different substitution string:
+All other characters do the same as \texttt{o}: Nothing. The difference is that they are allowed when the program is running, but not when it is loaded. After the instruction was executed, $[C]$ is reduced by 33, and then is encrypted using a different substitution string:
 
 \begin{lstlisting}[numbers=none,frame=none]
 5z]&gqtyfr$(we4{WP)H-Zn,[%\3dL+Q;>U!pJS72FhOA1C
@@ -57,6 +57,7 @@ B6v^=I_0/8|jsb9m<.TVac`uY*MK'X~xDl}REokN:#?G"i@
 After that, $C$ and $D$ are always incremented.
 
 \subsection{Example}
+\label{malbolge-example}
 
 For this language, we describe how Cooke came up with his Hello World program.
 

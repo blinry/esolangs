@@ -1,19 +1,95 @@
+This language was created with the main goal to have as few similarities with existing languages as possible. It has weird operators, unusual concepts like a politeness requirement, probabilistic execution, and a \texttt{COME FROM} statement.
+
 \subsection{History}
 
-The language's actual name is “Compiler Language With No Pronounceable Acronym”, which made it necessary to abbreviate it as “INTERCAL”.
+\ic{} is widely regarded as the first esoteric programming language ever created: It was invented in 1972 by Donald R. Woods and James M. Lyon, students at Princeton University. They had just finished their final exam and joked around with a friend about alternative names for punctuation symbols (for example, calling the “\texttt{"}” symbol “rabbit-ears”). According to Woods~\cite{hamilton2008az}, this was the starting point for a complete made-up language that differed in almost all aspects compared to other languages of that time.
 
-\blindtext[5]
+The language's actual name is \emph{Compiler Language With No Pronounceable Acronym}, which made it necessary to abbreviate it as \emph{\ic{}} instead. The manual~\cite{woods1973intercal} is full of humorous statements. A small selection:
+
+\begin{itemize}
+    \item “Under no circumstances confuse the mesh with the interleave operator, except under confusing circumstances!”
+    \item “Definition of array dimensions will be discussed later in greater detail, since discussing it in less detail would be difficult.”
+    \item “exp represents any expression (except colloquial and facial expressions)”
+    \item “Precedence of operators is as follows: (The remainder of this page intentionally left blank.)”
+    \item “This footnote intentionally unreferenced.”
+\end{itemize}
+
+Originally, \ic{} programs were written on punch cards and used the \textsc{ebcdic} character encoding, an 8-bit encoding by IBM that included characters like the cent symbol \texttt{\textcent}, which is not found in the \textsc{ascii} standard and had later to be replaced with “\texttt{\$}” in later versions. In this paper, we describe the modern C-\ic{} dialect (see \cref{intercal-variants}).
 
 \subsection{Description}
 
-\blindtext[5]
+Note that we will not describe \ic{}'s full syntax and semantics here, as it has too many features. We will instead focus on the most commonly used features, which enable us to write a small example program.
+
+\ic{} has special names for symbolic characters. For example, the “\texttt{"}” symbol is called “rabbit ears” and “\texttt{\%}” is called “double-oh-seven”. We will introduce the symbols' names when they are first used.
+
+    The only variable type in \ic{} is an unsigned integer. There are 16-bit integers, whose name must be a spot (\texttt{.}) followed by a number between 1 and 65535, and there are 32-bit integers, which start with a two-spot (\texttt{:}). Literals are always 16-bit and start with a mesh (\texttt{\#}). For example, \texttt{\#42} is the literal value 42, while \texttt{.42} is an unsigned 16-bit integer variable with the name “.42”.
+
+There are also integer arrays, whose names start with a tail (\texttt{,}) for an array of 16-bit values, and a hybrid (\texttt{;}), for 32-bit values, whose details we will not discuss here.
+
+There are two binary operators: The \emph{mingle} operation, denoted by a big money (\texttt{\$}), takes two 16-bit operands and produces a 32-bit number by alternating the operand's bits. For example, \texttt{\#7\$\#0} equals 42, as the bit sequences of 7 (\texttt{111}) and 0 (\texttt{000}) are interleaved to become \texttt{101010}.
+
+The other binary operation is called \emph{select}, denoted by a squiggle (\texttt{\~}), and uses the second operand as a mask that denotes which bits to select from the first operand. For example, \texttt{\#255\~\#42} equals 7, as three \texttt{1}s are selected from the \texttt{11111111}.
+
+There are three unary operators, namely ampersand\footnote{The manual implies that this name is already original enough.} (\texttt{\&}), book (\texttt{V}), and what (\texttt{?}). When applied a value, they rotate its bits to the right, and apply the bitwise logical AND, OR, or XOR functions on the result and the initial value. Unary operators are placed after the type-denoting character. For example, when applied to 77 (\texttt{0000000001001101}), the results are:
+
+\begin{quotation}
+\texttt{\#\&77} = \texttt{0000000000000100} = 4
+
+\texttt{\#V77} = \texttt{1000000001101111} = 32879
+
+\texttt{\#?77} = \texttt{1000000001101011} = 32875
+\end{quotation}
+
+As mentioned, \ic{} has no rules for operator precedence---the respective page in the manual is simply blank. To avoid ambiguities, expressions must be grouped using sparks (\texttt{'}) or rabbit-ears (\texttt{"}). To apply a unary operator to a sparked or rabbit-eared expression, it is placed after the opening symbol. For example, to apply first the OR, and then the AND operation to the number 42, one would write \texttt{"\&\#V42"}
+
+Next, let us look at statements. They must be prefixed with either \texttt{DO}, \texttt{PLEASE}, or \texttt{PLEASE DO}. \ic{} has a politeness requirement: Between 1/4 and 1/5 of all statements must begin with \texttt{PLEASE}. If the ratio is smaller than 1/5, the compiler rejects the source code for being insufficiently polite. If it is higher than 1/4, the program is rejected for being too sleazy.
+
+Statements may additionally be prefixed with a line number, which do not have to be in order. These lines may then be jumped to using \texttt{DO (<line number>) NEXT}. There is even a reversed construct: \texttt{COME FROM (<line number>)} will transfer control to the current line after the specified line has been executed.
+
+Assignment is done with an angle-worm:
+
+\begin{quotation}
+    \texttt{DO .1 <- \#1337}
+\end{quotation}
+
+The statement \texttt{READ OUT <expression>} is used to output a value (numbers are printed using Roman numerals). To read a number, \texttt{WRITE IN <variable>} is used; the value's individual digits must be spelt out in English (like “\texttt{FOUR TWO}” for 42).
+
+To exit a program, the statement \texttt{GIVE UP} must be used.
 
 \subsection{Example}
 
-\lstinputlisting[frame=tbrl,basicstyle=\ttfamily\footnotesize]{../langs/intercal/hello.i}
+The following prgrams calculates $2^n$ for some $n$ entered by the user. In line 1, the exponent is read from standard input and stored in the variable \texttt{.1}, which is also used as a loop variable. The variable \texttt{.4} will later contain the result and is initialized to 1. In line 3, \texttt{.2} is set to 1 as well, it will later be used to decrement the loop variable.
 
-\blindtext[5]
+Lines 5 and 12 set up a loop: After line 12 was executed, the expression in line 5 is evaluated. The expression selects from \texttt{.1} all bits where \texttt{.1} itself has a 1. That is, if \texttt{.1} contains any 1's at all, \texttt{.1~.1} will end with at least one 1. From this value, we select the last bit. So, the expression is 1 exactly if \texttt{.1} is not zero. As a result, as long as \texttt{.1} is not zero yet, a jump from line 12 to line 5 will occur.
+
+The loop body has two steps: First, multiply \texttt{.4} with two by mingling it with zeroes, and then applying a filter that selects all original bits, plus an additional zero at the end. Second, decrement the loop variable \texttt{.1} by calling the routine at \texttt{(1010)} in the standard library, which subtracts \texttt{.2} from \texttt{.1} and stores the result in \texttt{.3}.
+
+After the loop, print the result and exit.
+
+\lstinputlisting[frame=tbrl,basicstyle=\ttfamily\footnotesize]{intercal/pow.i}
+
+Remember that the output is in roman numerals. Here, $2^{10}$ is calculated to be 1024:
+
+\begin{io}
+Input: ONE ZERO
+Output: MXXIV
+\end{io}
 
 \subsection{Variants}
+\label{intercal-variants}
 
-\blindtext[2]
+In 1990, the American software developer Eric Raymond revived the language by releasing \textbf{C-\ic{}}, an \ic{} compiler written in C. Raymond enhanced the instruction manual significantly \cite{raymond2010cintercal}. C-\ic{} introduced some additional statements, like the \texttt{COME FROM} statement. It also added a mode called \textbf{Tri\ic{}}, which does not operate on binary values, but on trinary ones. In fact, the implementation supports all number bases up to 7 (base 8 is considered “too useful”).
+
+C-\ic{} also contains features of other variants: \textbf{Threaded \ic{}} spawns multiple threads when there is more than one \texttt{COME FROM} statement for one line. \textbf{Backtracking \ic{}} introduces the \texttt{MAYBE} label, that can be added to each statement. When encountered, it saves the complete program state, so if the respective choice turns out to be bad, the state can be restored and another decision can be made. This mechanism allows a very elegant formulation of backtracking algorithms.
+
+\subsection{Computational Class}
+
+As it is rather easy to write an interpreter for $\mathcal{P}''$ (see \cref{pprimeprime}) in \ic{} using the standard library \cite{alksentrs2008intercal}, the language is Turing complete.
+
+\subsection{Relevance}
+
+Until today, there's quite a large community around \ic{}. Raymond still actively maintains his C-\ic{} compiler, together with co-maintainer Alex Smith.
+
+When the company Woods worked for was acquired by Google in 2007, some Google employees wrote an \ic{} style guide~\cite{raiter2007google}, in analogy to the style guides for “proper” languages like C++ and Python. While it is also written quite humor, it does contain helpful recommendations and insightful comments that would make realizing a large software project in \ic{} easier.
+
+In 2003, Woods was contacted by Donald Knuth, who wrote him he had “just spent a week writing an \ic{} program”~\cite{knuth2003tpk} and discovered “a really cool hack” in the standard library's division routine~\cite{hamilton2008az}. In 2010, Knuth also contacted Raymond to report some bugs in C-\ic{}~\cite{raymond2010donald}.
