@@ -60,8 +60,8 @@ The following program reads a sequence of ASCII values from the user, and prints
 \lstinputlisting{brainfuck/ascii-min.b}
 
 \begin{io}
-Input: !\texttt{hello}!
-Output: !\texttt{0110100001100101011011000110110001101111}!
+Input: @\texttt{hello}@
+Output: @\texttt{0110100001100101011011000110110001101111}@
 \end{io}
 
 Let's look at it in more detail. The following commented version can be broken down into three sections: Line 1 sets up the basic memory layout, which is restored for each character the user enters. The program uses a “sentinel” cell with the special value 255 to facilitate seeking back to the end of the bit array. Line 10 reads the character, lines 11--18 implement a simple bit shift register to calculate the binary representation. The remaining lines print the binary digits by calculating the digits' ASCII values (48 for “0” or 49 for “1”). Note that lines 21---25 are equivalent to \texttt{++++++++++++++++++++++++++++++++++++++++++++++++}, which would also increment the cells' values by 48, but we wanted to demonstrate a more esoteric (and a more concise) approach here, which is why the actual code increases the value by 6 eight times.

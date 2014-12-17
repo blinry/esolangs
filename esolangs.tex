@@ -22,7 +22,7 @@
         frameround=tttt,
         basicstyle=\sffamily,
         columns=fullflexible,
-        escapechar=!
+        escapechar=@
     }}{}
 \usepackage{tabularx}
 \usepackage{xcolor}
@@ -60,6 +60,7 @@
 \end{abstract}
 
 \section{Introduction}
+\label{introduction}
 
 While programming languages are normally designed to be used productively and being helpful in real-world applications, esoteric programming languages have other goals:
 
@@ -68,6 +69,8 @@ They can be proof-of-concepts, demonstrating how minimal a language syntax can g
 The term “esoteric” stems from the ancient Greek \emph{esoterikos}, meaning “belonging to an inner circle”, and originally referred to Pythagoras' secret teachings. ref It evolved to mean “mystic”, or “having to do with highly theoretical concepts without obvious practical application”. The first usage of the term “esoteric” in the context of “weird programming languages” was probably on a web site called \emph{Esoteric Topics in Computer Programming}, published by Chris Pressey, inventor of Befunge, around 1997 \cite{pressey2005chris}.
 
 For this paper, I picked four well-known esoteric programming languages, that each demonstrate a unique property commonly found in other esoteric languages: \textbf{Brainfuck} attempts to have a \textit{minimal} syntax, which consists only of eight different characters. Nevertheless, it can be shown to be Turing-complete. \textbf{Shakespeare} requires its programs to look like Shakespearean plays, making it a \textit{themed} language. The author(s) of \textbf{\ic{}} attempted to create a \textit{weird} language, that differed from other languages known at that time in as many aspects as possible. \textbf{Befunge} is a \textit{two-dimensional} language, the user can use directional commands to control the program flow. Finally, \textbf{Malbolge} was designed to be as hard as possible to use, it took two years to write the first program.
+
+It's interesting to note that esoteric programming languages rarely ever seem to get out of fashion, because of their often unique, weird features. Whereas “real” multi-purpose languages can be replaced by more modern ones that add new features, or simplify the programmers life, esoteric languages are not under that kind of pressure to be usable. They can be appreceated like a piece of art, much like an oil painting can be admired for hundreds of years.
 
 For each language, we are going to look at it's origins, history, and nowadays significance, explain how the language works, give an interesting example and mention some popular variants.
 
@@ -130,6 +133,7 @@ The language is an example of a so-called \emph{Turing tarpit}. This term was co
 
 \blindtext[2]
 
-\printbibliography
+\defbibnote{prenote}{Note: All URLs have been accessed at 2014--12--17.}
+\printbibliography[prenote=prenote]
 
 \end{document}

@@ -1,19 +1,90 @@
+Befunge is a self-modifying, stack-based, two-dimensional language: Instead of a tape, it operates on a sheet, and its programs are also written down that way.
+
 \subsection{History}
 
-%http://frox25.no-ip.org/~mtve/tmp/bef_maillist_0_520.txt
+Befunge was intenved in 1993 by Chris Pressey, and is believed to be the first two-dimensional esoteric programming language. Pressey's motivation was to create a language which was as difficult to compile as possible. According to Pressey \cite{presseycoleman}, the name “Befunge” was originally a mistyping of “before”, typed by Curtis Coleman in a BBS chat system at 4AM.
 
-\blindtext[5]
+In 1996, he invited interested persons to join the \emph{Befunge Mailing List}, where they discussed the language and shared code and ideas \cite{pressey1996welcome}. It later evolved into the \emph{Esoteric Topics Mailing List}, which (along with his \emph{Esoteric Topics} page, see \cref{introduction}) seems to have contributed to the usage of the term “esoteric” in terms of programming languages.
+
+In this paper, we will focus on \textbf{Befunge-93}, the language's original version.
 
 \subsection{Description}
 
-\blindtext[5]
+Programs in Befunge are a grid of ASCII characters with a width of 80 and a height of 25\footnote{A common size of old terminal emulators like the VT100}, called the \emph{playfield}. Like in Brainfuck, there is an instruction pointer, which starts at the topleft entry, moving right. When the pointer leaves the playfield, it wraps around to the other side. Encountered instructions are executed. The pointer keeps moving in the same direction, if it is not changed. Additionally, Befunge maintains a stack of values, which can be manipulated in various ways.
+
+Befunge has the following 36 different instructions, which are very easy to understand:
+
+\begin{description}[labelsep=1em]
+    \item[\texttt{+} \texttt{-} \texttt{*} \texttt{/} \texttt{\%}] Pop two values, add/subtract/multiply/integer-divide/modulo them, and push the result.
+    \item[\texttt{!}] Pop a value, if it is zero, push 1, otherwise, push 0.
+    \item[\texttt{`}] Pop two values, if the first one is smaller, push 1, otherwise 0.
+    \item[\texttt{>} \texttt{<} \texttt{\^} \texttt{v}] Move the pointer to the right/left/up/down.
+    \item[\texttt{?}] Move the pointer in a random direction.
+    \item[\texttt{\_}] Pop a value it it is 0, move right, otherwise left.
+    \item[\texttt{|}] Pop a value it it is 0, move down, otherwise up.
+    \item[\texttt{"}] Turn on stringmode (until the next \texttt{"}, the values of the ASCII characters will be pushed).
+    \item[\texttt{:}] Duplicate top stack value.
+    \item[\texttt{\\}] Swap the top two stack values.
+    \item[\texttt{\$}] Discard the top stack element.
+    \item[\texttt{.}] Print the value of the topmost element.
+    \item[\texttt{,}] Print the ASCII character of the topmost element.
+    \item[\texttt{\#}] Bridge: Jump over the next command.
+    \item[\texttt{g}] Pop y and x and push the ASCII value of the character at that position in the program.
+    \item[\texttt{p}] Pop y, x and v, and write the ASCII value v to the position (x,y) in the program.
+    \item[\texttt{\&}] Read an integer from standard input and push it.
+    \item[\texttt{\~}] Read a character from standard input and push it.
+    \item[\texttt{@}] End the program.
+    \item[\texttt{0-9}] Push the number onto the stack.
+\end{description}
+
+The most important instructions are the direction-changing instructions. For example, this program represents an endless loop:
+
+\begin{lstlisting}
+>v
+^<
+\end{lstlisting}
+
+Note that as calculations operate on the stack, they must be written down in postfix notation. Values larger than 9 must be calculated beforehand, as well. For example, this program puts $42\cdot 23$ on the stack:
+
+\begin{lstlisting}
+67*83*1-*
+\end{lstlisting}
 
 \subsection{Example}
 
-\lstinputlisting[frame=tbrl,basicstyle=\ttfamily\footnotesize]{../langs/befunge/fibonacci.bf}
+The following program reads characters from the standard input, and perform the ROT13 operation on them, which moves letters by 13 places forward in the alphabet, wrapping from Z back to A. Lowercase and uppercase letters are moved seperately. Applying ROT13 to a text will restore the original. This operation is sometimes used in forums to hide spoilers from plain view, while making it trivial to en- and decode it.
 
-\blindtext[5]
+\lstinputlisting[frame=tbrl,basicstyle=\ttfamily\footnotesize]{befunge/rot13.bf}
+
+\begin{io}
+Input: Hello, world!
+Output: Uryyb, jbeyq!
+\end{io}
+
+To make the paths inside of the program more clear, we show another version here, which has added redundant direction arrows and additional lines.
+
+\lstinputlisting[frame=tbrl,basicstyle=\ttfamily\footnotesize]{befunge/rot13-paths.bf}
+
+The execution starts with the first character in the first line. When first encountering the \texttt{>}, is is ignored, as the instruction pointer is moving right anyway. The \texttt{~} instruction reads in a character and pushes its ASCII value on the stack. This value is then duplicated (\texttt{:}). The first \texttt{"} turns the stringmode on, thus the following character, \texttt{`}, is pushed on the stack as a 96. The second \texttt{"} closes the stringmode again. After that, the \texttt{`} compares the two topmost stack values, removes them, and then pushes a 1 if the top one was smaller, and a 0 otherwise. Then, the \texttt{!} inverts this “truth value”.
+
+The last instruction on that line, the \texttt{v}, moves the instruction pointer to the first conditional statement in line 2. If there is a 0 on the stack, which is the case if the original letter came after \texttt{`} in the ASCII table, the pointer moves right, otherwise left. If it moves right, the original value is duplicated again and now compared to \texttt{z} in exactly the same way as in line 1. This time, the truth value is not inverted, so that we move left if our letter was larger than \texttt{z}, and right otherwise. If moving right, we know that we have a lowercase letter.
+
+In line 3, it is finally compared to \texttt{m}, and control is transfered to the small C-shaped construct in the midele of the program, coming from the left in line 5.
+
+Depending on whether our letter is in the range \texttt{a}--\texttt{m} or in the range \texttt{n}--\texttt{z}, it moves down or up at the \texttt{|} instruction. If it is in the lower half, 13 is added, else it is subtracted, by pushing first a 9 on the stack, then adding it, then doing the same with a 4. Finally, control is transfered to the first \emph{column} (the detailed version uses bridges (\texttt{\#}) to jump over a \texttt{v} lane), where the resulting letter is finally printed with the \texttt{,} instrction. After that, the first \texttt{>} in line 1 closes the loop, and the process is started again.
+
+Note that when we find that our letter is smaller than \texttt{`} in line 2, we move left, and then down, up to line 9. Here the same process is repeated for uppercase letters, which are larger than \texttt{@}, smaller or equal to \texttt{Z}, and also dividable into two groups with the \texttt{M}. The inner part is reused. In all other failing tests, control is transfered back to column 1, and the character is eventually output, whether it was changed (in case of letters) or not (in all other cases).
+
+\subsection{Computational Class}
+
+Because of its space limitations ($80\cdot 25$ bytes), Befunge is not Turing-complete. Without this limitation, it would be relatively easy to implement a Brainfuck interpreter in it.
 
 \subsection{Variants}
 
-\blindtext[3]
+Pressey later released \textbf{Befunge-98}, which removes the size restriction of the playfield, making the language Turing-complete. Actually, Befung-98 is a member of a generalized family of languages, the \textbf{Funge-98} family. Its members are \textbf{Unefunge}, \textbf{Befunge}, and \textbf{Trefunge}, which operate in one, two, or three dimensions respectively. In Trefunge, the \emph{form feed} character (with ASCII value 12, formerly used to eject a page from printers), is used to increase the z-coordinate of the source code, thus going to the next “layer” of the program.
+
+There are also many more languages inspired by Befunge. \textbf{Wierd}, created as a collaboration on the Befunge mailing list by Pressey, Ben Olmstead (who would later create Malbolge), and John Colagioia, attempts to trim down the number of instructions. In fact, there is only one instruction: All non-whitespace characters are treated the same. The semantic is defined by the angles the lines of characters make in the 2D space. \textbf{PATH} is a crossover between Befunge and Brainfuck: The program's source code is one-dimensional, but the data pointer lives in a two-dimensional field. 
+
+\subsection{Relevance}
+
+Befunge is still quite popular. There are quite a few actively maintained interpreters/compilers, and new variants get published every few months.
