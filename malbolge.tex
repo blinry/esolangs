@@ -1,37 +1,37 @@
-Malbolge is an example of a language which is specifically designed to be incomprendible and hard to use. This is accomplished by a combination of code encryption, self-modification and the use of unpleasant operators. After the specification was published, it took two years until the first nontrivial program was written.
+Malbolge is an example of a language which is specifically designed to be incomprendible and hard to use. This is accomplished by a combination of encryption, self-modification and the use of unpleasant operators. After the specification was published, it took two years until the first nontrivial program was written.
 
-\subsection{History}
+\subsection{Origin}
 
-Malbolge was created in 1998 by Ben Olmstead, an Amerian student at the Colorado School of Mines at the time. In the documentation \cite{olmstead1998malbolge}, he explicity mentions that he didn't knew of an esoteric programming language that made programming in it specifically hard. In his opinion, languages like Brainfuck and INTERCAL were indeed hard to read and to write, but were created with other goals in mind: To be minimal, and to be unique. He also considered both being too useful. Hence he created Malbolge, with the goal to make it as difficult to use, and to be as incomprehensible as possible.
+Malbolge was created in 1998 by Ben Olmstead, an Amerian student at the Colorado School of Mines at the time. In the documentation \cite{olmstead1998malbolge}, he explicitly mentions that he did not knew of an esoteric programming language that made programming in it specifically hard. In his opinion, languages like Brainfuck and \ic{} were indeed hard to read and to write, but were created with other goals in mind: To be minimal, and to be weird. He also considered both being too useful. Hence he created Malbolge, with the goal to make it as difficult to use, and to be as incomprehensible as possible.
 
-The language's name stems from an epic poem of the Italian poet Dante, \emph{Divina Commedia}, whose first part describes the main characters's descent into the circles of Hell. The eighth circle is reserved for sinners who committed conscious fraud or treachery, and is called Malebolge (which roughly translates from Italian to “evil pockets”). It is one of the most unpleasant places to be in Dante's description of Hell, and the people in it are punished for all eternity.
+The language's name stems from an epic poem of the Italian poet Dante, \emph{Divina Commedia}, whose first part describes the main character's descent into the nine circles of Hell. The eighth circle is reserved for sinners who committed conscious fraud or treachery, and is called \emph{Malebolge} (which roughly translates from Italian to “evil pockets”). It is one of the most unpleasant places to be in Dante's description of Hell, and the people in it are punished for all eternity.
 
 When publishing the specification, Olmstead had not managed to write a single Malbolge program, except from a trivial one that exited immediately. The first nontrivial program was written by Andrew Cooke in 2000, two years after the specification was published. It prints \texttt{HEllO WORld} \cite{cooke2000malbolge} and was found by an extensive search algorithm. For details, refer to \cref{malbolge-example}.
 
-The first program that contained loops and aborting conditions was writtten in 2005 by Hisashi Iizawa \cite{iizawa2005malbolge}. It is 22,561 characters long and is an implementation of the standard program “99 bottles of beer”.
+The first program that contained loops and aborting conditions was written in 2005 by Hisashi Iizawa \cite{iizawa2005malbolge}. It is 22,561 characters long and is an implementation of the standard program “99 bottles of beer”.
 
 \subsection{Description}
 
-Malbolge programs are machine code for a simple virtual machine, whose CPU has three registers: The accumulator $A$ is used for calculations, and implicity is set to each value that is written to memory. The code pointer $C$ points to the instruction to be executed next. The data pointer $D$ is used to point to data regions in the memory to be modified. Initially, all registers are set to 0.
+Malbolge programs are machine code for a simple virtual machine, whose CPU has three registers: The accumulator $A$ is used for calculations, and implicitly is set to each value that is written to memory. The code pointer $C$ points to the instruction to be executed next. The data pointer $D$ is used to point to data regions in the memory to be modified. Initially, all registers are set to 0.
 
-The virtual machine has 59049 memory cells. Malbolge operates on ternary values, a property inspired by tri-INTERCAL. Each memory cell consists of ten \emph{trits}, which means it can contain values from $0$ up to $3^{10} = 59048$.
+The virtual machine has 59049 memory cells. Malbolge operates on ternary values, a property inspired by tri-\ic{}. Each memory cell consists of ten \emph{trits}, which means it can contain values from $0$ up to $3^{10} = 59048$.
 
-Before the virtual machine can execute a program, it has to load it to memory. Whitespace is ignored during this process, and when encountering something that is not a valid execution, the loading is aborted. Valid instructions are read to memory, one ASCII character per cell. The remaining uninitialized cells are filled by applying the \emph{crazy operation} (see below) to the two preceding cells. After that, execution starts.
+Before the virtual machine can execute a program, it has to load it to memory. Whitespace is ignored during this process, and when encountering something that is not a valid execution, the loading is aborted. Valid instructions are read to memory, one \ascii{} character per cell. The remaining uninitialized cells are filled by applying the \emph{crazy operation} (see below) to the two preceding cells. After that, execution starts.
 
-When executing an instruction, if it is not a graphical ASCII character (a value between 33 and 126), the program stops. Otherwise, the CPU subtracts 33, adds $C$, computes the remainder on division by 94, and then uses the result as an index into the following character strinng, effectively applying a simple substitution encryption:
+When encountering an instruction that is not a graphical \ascii{} character (a value between 33 and 126), the program stops. Otherwise, the CPU subtracts 33, adds $C$, computes the remainder after division by 94, and then uses the result as an index into the following character string, effectively applying a simple substitution encryption:
 
 \begin{lstlisting}[numbers=none,frame=none]
 +b(29e*j1VMEKLyC})8&m#~W>qxdRp0wkrUo[D7,XTcA"lI
 .v%{gJh4G\-=O@5`_3i<?Z';FNQuY]szf$!BS/|t:Pn6^Ha
 \end{lstlisting}
 
-For example, a result of 0 would yield a \texttt{+} character, and result of 1 would yield a \texttt{b}. The resulting character then determines the instruction according to the following table. As a convention, let $[X]$ denote the value at the memory location $X$.
+For example, a value of 0 would be translated to a “\texttt{+}” character, and value of 1 would yield a “\texttt{b}”. The resulting character then determines the instruction according to the following table. As a convention, let $[X]$ denote the value at the memory location $X$.
 
 \begin{description}[labelsep=1em]
-    \item[\texttt{j}] Assigns $[D]$ to $D$.
-    \item[\texttt{i}] Assigns $[D]$ to $C$.
-    \item[\texttt{*}] Rotates the trits of $[D]$ to the right.
-    \item[\texttt{p}] Applies the crazy operation to $[D]$ and $A$. This works on tritlevel (like XOR would on binary numbers), according to the following table (the first operand is on the left):
+    \item[\texttt{j}] Assign $[D]$ to $D$.
+    \item[\texttt{i}] Assign $[D]$ to $C$.
+    \item[\texttt{*}] Rotate the trits of $[D]$ to the right.
+    \item[\texttt{p}] Apply the crazy operation to $[D]$ and $A$. This works on tritlevel (in analogy to how bitwise operations work on binary numbers), according to the following table (the first operand is on the left):
 
      \begin{tabular}{l|lll}
      & 0 & 1 & 2\\
@@ -41,13 +41,13 @@ For example, a result of 0 would yield a \texttt{+} character, and result of 1 w
      2 & 2 & 2 & 1
      \end{tabular}
 
-    \item[\texttt{/}] Reads an ASCII value from standard input, converts it to trinary, and writes it to $A$.\footnote{Note that the specification and the official implementation differ at this point: The specification swaps the semantics of \texttt{/} and \texttt{<}. For compability, most sources consider the implementation to be correct, and we follow this approach here, too.}
-    \item[\texttt{<}] Converts A's value to an ASCII character and writes it to standard output.
-    \item[\texttt{v}] Stops the program.
-    \item[\texttt{o}] Does nothing.
+    \item[\texttt{/}] Read an \ascii{} value from standard input, convert it to trinary, and write it to $A$.\footnote{Note that the specification and the official implementation differ at this point: The specification swaps the semantics of \texttt{/} and \texttt{<}. For compability, most sources consider the implementation to be correct, and we follow this approach here, too.}
+    \item[\texttt{<}] Convert A's value to an \ascii{} character and write it to standard output.
+    \item[\texttt{v}] Stop the program.
+    \item[\texttt{o}] Do nothing.
 \end{description}
 
-All other characters do the same as \texttt{o}: Nothing. The difference is that they are allowed when the program is running, but not when it is loaded. After the instruction was executed, $[C]$ is reduced by 33, and then is encrypted using a different substitution string:
+All other characters do the same as \texttt{o}: Nothing. The difference is that they are allowed when the program is running, but not when it is loaded. After the instruction is executed, $[C]$ is reduced by 33, and then is encrypted using a different substitution string:
 
 \begin{lstlisting}[numbers=none,frame=none]
 5z]&gqtyfr$(we4{WP)H-Zn,[%\3dL+Q;>U!pJS72FhOA1C
@@ -59,44 +59,44 @@ After that, $C$ and $D$ are always incremented.
 \subsection{Example}
 \label{malbolge-example}
 
-For this language, we describe how Cooke came up with his Hello World program.
+For this language, instead of giving an original example, we describe how Cooke came up with his \emph{Hello World} program, the first nontrivial piece of Malbolge code.
 
-He first introduced the notion of \emph{normalized Malbolge}, which removes the initial encryption of the program's instructions and thus only consists of the valid commands \texttt{j}, \texttt{i}, \texttt{*}, \texttt{p}, \texttt{/}, \texttt{<}, \texttt{v}, and \texttt{o}. This makes it easier to put together Malbolge programs, as the characters don't change their meaning depending on their location. An example is given below.
+Cooke first introduced the notion of \emph{normalized Malbolge}, which removes the initial encryption of the program's instructions and thus only consists of the valid commands \texttt{j}, \texttt{i}, \texttt{*}, \texttt{p}, \texttt{/}, \texttt{<}, \texttt{v}, and \texttt{o}. This makes it easier to put together Malbolge programs, as the characters do not change their meaning depending on their location. An example is given below.
 
-Cooke first tried to find a solution using genetic algorithms, with the fitness function describing how correct the output of the programs looked, but this approach failed as in the merging step the program parts interacted in unintended ways due to the back and forth jumps.
+Cooke initially tried to find a solution using genetic algorithms, with the fitness function describing how correct the output of the programs looked, but this approach failed as in the merging step the program parts interacted in unintended ways due to the back and forth jumps.
 
-He then proceeded to a best-first search, set up like this: A node in the search graph represented the machine at a specific point in time, and thus contained the register values, the known contents of the memory, and the output so far. He started with a node with zeroed registers, unknown memory, and no output. Every time the memory was accessed in the program (for example, when fetching the next instruction), he created eight new nodes, corresponding to the eight possible valid instructions. All nodes received a score depending on how much of “hello world” they had printed so far, and on how many memory accesses they had made. To save time, he made the search case-insensitive, that is, he allowed the characters of the string to be uppercase or lowercase letters. At the nodes with the highest score, the graph was explored first.
+He then proceeded to a best-first search, set up like this: A node in the search graph represented the machine at a specific point in time, and thus contained the register values, the known contents of the memory, and the output so far. He started in a node with zeroed registers, unknown memory, and no output. Every time the memory was accessed in the program (for example, when fetching the next instruction), he created eight new nodes, corresponding to the eight possible valid instructions, essentially buulding a graph of all possible program states. All nodes received a score depending on how much of “hello world” they had printed so far, and on how many memory accesses they had made. To save time, he made the search case-insensitive, that is, he allowed the characters of the string “Hello World” to be uppercase or lowercase letters. At the nodes with the highest score, the graph was explored first.
 
-This appeared to work, but required a huge amount of memory, so he made two more adaptions: Each node only stored the newly read memory cell, the complete memory layout could then be derived from its parents. And not all nodes of the graph were kept, but only the best $n$ (this value is called \emph{beam width} in the literature, and values of 1000 to 10000 seemed to work well for Cooke).
+This seemed to work, but required a huge amount of memory, so he made two more modifications: Each node only stored the newly read memory cell; the complete memory layout could then be derived from its parents. And not all nodes of the graph were kept in memory, but only the best $n$ (this value is called \emph{beam width} in the literature, and values of 1000 to 10000 seemed to work well for Cooke).
 
-This approach, running on a 500 MHz CPU, took “a few hours” to find a program that prints the required words, after searching about 60,000 nodes:
+This approach, running on a 500 MHz CPU, took “a few hours” to find a program that printed the required words, after searching about 60,000 nodes:
 
 \lstinputlisting{malbolge/hello.mal}
 
 \begin{io}
-Output: HEllO WORld
+Output: @\texttt{HEllO WORld}@
 \end{io}
 
-For comparison, here is the same program in normalized form. Note, for example, that the program's middle section consists of many no-operation instructions which push the last seven insctructions to the required memory location:
+For comparison, here is the same program in its normalized form. Note, for example, that the program's middle section consists of many no-operation instructions which push the last seven insctructions to the required memory location:
 
 \lstinputlisting{malbolge/hello-normalized.mal}
 
-Unfortunately, it's not really practical to explain how this code works, as it would require a step-by-step explanation of each executed instruction, which we skip here.
+Unfortunately, it is not really useful to explain how this code works, as it would require a step-by-step explanation of each executed instruction, which we would like to skip here.
 
 \subsection{Computational class}
 
-Olmstead mentioned in the initial specification that he thought Malbolge to be Turing complete, as it has sequential execution, and, as he conjectured, mechanisms to repeat code and to do conditional execution. Programs like Iizawa's “99 bottles of beer” suggest that this might be true. To be Turing complete, however, the virtual machine would need access to an unlimited amount of memory, otherwise arbitrary operations on arbitrarily large input would not be possible.
+Olmstead mentioned in the initial specification that he thought Malbolge to be Turing complete, as it has sequential execution, and, as he conjectured, mechanisms to repeat code and to do conditional execution. Programs like Iizawa's “99 bottles of beer” suggest that this might be true (if ignoring the hard memory limit of 59049 trits).
 
 \subsection{Variants}
 
-Some time after releasing the specification for Malbolge, Olmstead worried that his language was \emph{too hard}\footnote{The most exciting program known at this time printed the number 666 and exited.}, and thus created another, easier language called \textbf{Dis} (\emph{Dis} is the city encompassing the lower circles of Dante's Hell, including \emph{Malebolge}). Dis works very similar to Malbolge, but differs in some aspects, which makes programming easier: Dis does not en- and decrypt instructions before and after execution; it has a more humane crazy operation; it allows comments; and uninitialized memory cells are set to 0. For this lanuage, Olmstead could provide an examples that copied its input to the output.
+Some time after releasing the specification for Malbolge, Olmstead worried that his language was \emph{too hard}\footnote{The most exciting program known at that time printed the number 666 and exited.}, and thus created another, easier language called \textbf{Dis} (\emph{Dis} is the city encompassing the lower circles of Dante's Hell, including \emph{Malebolge}). Dis works very similar to Malbolge, but differs in some aspects, which make programming easier: Dis does not en- and decrypt instructions before and after execution; it has a more humane crazy operation; it allows comments; and uninitialized memory cells are set to 0. For this lanuage, Olmstead could indeed provide an example that copies its input to the output.
 
-As mentioned, the original Malbolge is not Turing complete due to its hard memory limitations. \textbf{Malbolge Unshackled} is a Malbolge dialect created in 2007 by Ørjan Johansen, that attempts to be Turing complete by removing this memory limit: The memory cells in Malbolge Unshackled can store an unlimited number of trits, which requires some adaptions, but works eventually. Furthermore, the I/O instrucitons operate on Unicode codepoints, not ASCII characters.
+As mentioned, the original Malbolge is not really Turing complete due to its hard memory limitations. \textbf{Malbolge Unshackled} is a Malbolge dialect created in 2007 by Ørjan Johansen, that attempts to lift that restriction: The memory cells in Malbolge Unshackled can store an unlimited number of trits. This modification requires some adaptions regarding how the operators work, but it does work out eventually. Furthermore, the I/O instrucitons operate on Unicode codepoints, not \ascii{} characters.
 
 \subsection{Significance}
 
-Around 2005, the American scientist Louis Scheffer provided a cryptoanalysis of Malbolge, uncovering several weaknesses in the design---like cycles in the en- and decryption substition tables---which make it possible to avoid some of Malbolge's complications \cite{schefferintroduction}. He describes how to store and load values, to do simple arithmatic, and to avoid self-modification in a systematical manner. He then used these ideas to describe how a Brainfuck-to-Malbolge compiler could work \cite{schefferwriting}, which would be a formal proof of Turing completeness (again, ignorig memory limitations). Scheffer closes with some ideas to make Malbolge even harder, like improving the substition tables, making the crazy operation less useful, or modifying instructions before they are executed, not after.
+Around 2005, the American scientist Louis Scheffer provided a cryptoanalysis of Malbolge, uncovering several weaknesses in the design---like cycles in the en- and decryption substition tables---which make it possible to avoid some of Malbolge's complications \cite{schefferintroduction}. He described how to store and load values, to do simple arithmatic, and to avoid self-modification in a systematical manner. He then used these ideas to describe how a Brainfuck-to-Malbolge compiler could work \cite{schefferwriting}, which would be a formal proof of Turing completeness (again, ignorig memory limitations). Finally, Scheffer gave some ideas to make Malbolge \emph{even harder}, like improving the substition tables, making the crazy operation less useful, or modifying instructions \emph{before} they are executed, not after.
 
-In 2013, the German computer science student Matthias Ernst wrote a Malbolge assembler (LMAO, \emph{Low-level Malbolge Assembler, Ooh!}), that creates Malbolge programs from a low-level assembly language (HeLL, \emph{Hellish Low-level Language}). Using techniques from Iizawa, he also managed to write a quine, and a simple text adventure game \cite{ernstmalbolge}.
+In 2013, the German computer science student Matthias Ernst wrote a Malbolge assembler (LMAO, \emph{Low-level Malbolge Assembler, Ooh!}), that creates Malbolge programs from a low-level assembly language (HeLL, \emph{Hellish Low-level Language}). Using techniques from Iizawa, he also managed to write a quine and a simple text adventure game \cite{ernstmalbolge}.
 
 Malbolge made an appereance in a 2012 episode of the American crime TV series \emph{Elemntary} \cite{hamilton2012esoteric}, in which bank robbers use an algorithm formulated in Malbolge to break the security system of a bank vault. Actually, the source code depicted in the show is the “Hello World” program from Wikipedia with a few typing errors.

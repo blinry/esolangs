@@ -2,18 +2,18 @@ Shakespeare is an esoteric language whose programs resembles Shakespearian plays
 
 \subsection{Origins}
 
-The Shakespeare Programming Language (originally SPL, but we will refer to it here as “Shakespeare”) was created in 2001 by Karl Hasselström and Jon Åslund who were studying Computer Science at the Royal Institute of Technology in Stockholm at the time. According to the language documentation \cite{hasselstrom2001shakespeare}, they were given an freestyle assignment in their Syntax Analysis class that challenged them to apply what they had learned. They were familiar with at least Brainfuck and Malboge, and so decided to design and implement their own esoteric programming language. By a coincidence, they had occupied theirselves with Shakespeare's works before, and thought the formal structure of a play would suit a programming language quite well. After some months of work, they released the first version of the Shakespeare documentation to the Internet, along with a Shakespeare-to-C translator based on the standard UNIX lexer and parser tools \texttt{bison} and \texttt{flex}.
+The Shakespeare Programming Language (originally SPL, but we will refer to it here as “Shakespeare”) was created in 2001 by Karl Hasselström and Jon Åslund who were studying Computer Science at the Royal Institute of Technology in Stockholm at the time. According to the language documentation \cite{hasselstrom2001shakespeare}, they were given an freestyle assignment in their Syntax Analysis class that challenged them to apply what they had learned. They were familiar with at least Brainfuck and Malboge, and so decided to design and implement their own esoteric programming language. By a coincidence, they had occupied themselves with Shakespeare's works a short while before, and thought the formal structure of a play would suit a programming language quite well. After some months of work, they released the first version of the Shakespeare documentation to the Internet, along with a Shakespeare-to-C translator based on the standard UNIX lexer and parser tools \texttt{bison} and \texttt{flex}.
 
 \subsection{Description}
 
-According to the authors, Shakespeare “combines the expressiveness of BASIC with the user-friendliness of assembly language”. It does not support explicit loop constructions, the programmer has resort to labels and goto-like operations. We will now describe the structure of a Shakespeare program:
+According to the authors, Shakespeare “combines the expressiveness of BASIC with the user-friendliness of assembly language”. It does not support explicit loop constructions, the programmer has resort to labels and goto-like operations instead. We will now describe the structure of a Shakespeare program:
 
-The text up to the first period is the program's title. It is purely aesthetic and is ignore by the compiler. The next section is a list of all characters in the play, which in Shakespeare's are equivalent to variables. A character “declaration” consists of a name (which must be an actual character in one of Shakespeare's plays), followed by a description and a period. The rest of the program is divided into acts and scenes, which are numbered with roman numerals. The numerals act as labels which can be jumped to using goto statements, as we will explain in a moment.
+The text up to the first period is the program's title. It is purely aesthetic and is ignored by the compiler. The next section is a list of all characters in the play, which in Shakespeare's are equivalent to variables. A character “declaration” consists of a name (which must be an actual character in one of Shakespeare's plays), followed by a description and a period. The rest of the program is divided into acts and scenes, which are numbered with roman numerals. These numerals act as labels which can be jumped to using goto statements, as we will explain in a moment.
 
 Characters can enter or leave the stage, which is done with the following statement:
 
 \begin{quotation}
-    \texttt{[Enter/Exit <character(s)>]}
+    \texttt{[Enter/Exit} \emph{character(s)}\texttt{]}
 \end{quotation}
 
 Characters can talk to each other when they are on the stage. To avoid ambiguities, there can be at most two characters on the stage whenever a character is addressed. When talking, any noun represents an integer, either a 1 (if it is a “nice” or a neutral noun, like \texttt{flower} or \texttt{chair}), or a -1 (if it is negative, like \texttt{hell} or \texttt{Microsoft}\footnote{It seems that the authors were using Linux\dots}). Nouns can be prefixed with adjectives, each multiplying its value by a factor of two. For example, to assign the value 4 to a character, the other character on the stage could say:
@@ -30,7 +30,7 @@ The “\texttt{as pretty as}” part is optional and has no semantic, “\texttt
     \texttt{Open your heart!}
 \end{quotation}
 
-And to print the correspondent ASCII character, one would use this phrase:
+And to print the correspondent \ascii{} character, one would use this phrase:
 
 \begin{quotation}
     \texttt{Speak your mind!}
@@ -39,25 +39,25 @@ And to print the correspondent ASCII character, one would use this phrase:
 There is a similar pair of phrases to read a number/character from standard input: “\texttt{Listen to your heart}” and “\texttt{Open your mind}”. To go to another scene, a character can say:
 
 \begin{quotation}
-    \texttt{Let us proceed to scene/act <roman numeral>}
+    \texttt{Let us proceed to scene/act} \emph{roman numeral}
 \end{quotation}
 
 There are conditional statements, which consist of a comparative question and an if clause, for example:
 
 \begin{quotation}
-    \texttt{Am I better than Mercutio? If not, ...}
+    \texttt{Am I better than Mercutio?~If not, ...}
 \end{quotation}
 
-Finally, to make more complex data structure possible, each character has it's own stack of values. A character can push a value onto the the other's stack with
+Finally, to make more complex data structure possible, each character has its own stack of values. A character can push a value onto the other's stack with
 
 \begin{quotation}
-    \texttt{Remember <value>}
+    \texttt{Remember} \emph{value}
 \end{quotation}
 
 and pop it with
 
 \begin{quotation}
-    \texttt{Recall <free text>}
+    \texttt{Recall} \emph{free text}
 \end{quotation}
 
 which makes the character take the popped value.
@@ -66,11 +66,12 @@ which makes the character take the popped value.
 
 The following program prints the first 33 numbers of the Fibonacci series. For better readability, it is divided into five sections, with some comments before each of them.
 
-The play uses three characters: Juliet saves the last two Fibonacci numbers (one as her value, one on her stack). Romeo counts how many numbers were output, and acts as a temporary variable for calculating the next Fibonacci number. Mercutio has a double purpose: Printing space characters and to denoting how many numbers to output.
+The play uses three characters: Juliet saves the last two Fibonacci numbers (one as her value, one on her stack). Romeo counts how many numbers were output, and acts as a temporary variable when calculating the next Fibonacci number. Mercutio also has a double purpose: Printing space characters and denoting how many numbers to output.
 
+\todo[inline]{Better title?}
 \lstinputlisting{shakespeare/part1.spl}
 
-The rest of the program is divided into three scenes: In Scene I, Mercutio assigns a 1 (“\texttt{flower}”) to Juliet, while she assigns him a 32, the ASCII value of a space character. The equivalent C code would for this would read like this:
+The rest of the program is divided into three scenes: In Scene I, Mercutio assigns a 1 (“\texttt{flower}”) to Juliet, while she assigns him a 32, the \ascii{} value of a space character. The equivalent C code would read like the following:
 
 \begin{quotation}
     \texttt{mercutio = 2*2*2*2*2*(-1);}
@@ -78,9 +79,11 @@ The rest of the program is divided into three scenes: In Scene I, Mercutio assig
     \texttt{mercutio = 0 - mercutio;}
 \end{quotation}
 
+After that, Juliet assigns a 0 to Romeo, whereas he makes her output her value and pushes his own value on her stack.
+
 \lstinputlisting{shakespeare/part2.spl}
 
-In Scene II, Romeo compares his value to Mercutio's, and if his is greater, he skips to scene IV where the program terminates. Otherwise, he makes Mercutio output a space character (“\texttt{speak your mind}”), while Mercutio increments him ($\text{“\texttt{stone wall}”} = 1$) and pushes the new value onto Romeo's stack.
+In Scene II, Romeo compares his value to Mercutio's, and if his is greater, he skips to scene IV where the program terminates. Otherwise, he makes Mercutio output a space character (“\texttt{Speak your mind}”), while Mercutio increments him ($\text{“\texttt{stone wall}”} = 1$) and pushes the new value onto Romeo's stack.
 
 \lstinputlisting{shakespeare/part3.spl}
 
@@ -99,20 +102,20 @@ Output:
 317811 514229 832040 1346269 2178309 3524578
 \end{io}
 
+\subsection{Computational Class}
+
+Shakespeare can be shown to be Turing-complete by describing a method to execute Brainfuck programs in Shakespeare, using two characters, whose stacks emulate Brainfuck's tape, and using scenes and goto statements for loops \cite{stux2005shakespeare}.
+
 \subsection{Variants}
 
-To our knowledge, there are no major variants of Shakespeare, probably due to the fact that its themed appereance rather makes it seem to be a work of art, rather than a language specification to be improved and worked upon. Shakespeare's authors think that the language and its compiler are “done” \cite{herrick2011az}, which is indeed unusual for any kind of software, most of which undergo constant tweaks and bugfixes.
+To our knowledge, there are no major variants of Shakespeare, probably due to the fact that its themed appearance rather makes it seem to be a work of art, rather than a language specification to be improved and worked upon. Shakespeare's authors think that the language and its compiler are “done” \cite{herrick2011az}, which is indeed unusual for any kind of software, most of which undergo constant tweaks and bugfixes.
 
-There are other themed esoteric languages which read like prose: Programs in \textbf{Chef} read like recipes. The ingredients act as variables---dry ingredients are numbers, and liquid ingredients are Unicode characters. The ingredients can be arranged in \emph{bowls} (stacks) and finally are \emph{baked} (which will output their values). \textbf{Taxi} programs reads like a list of directions for a taxi driver transporting \emph{passengers} (variables) through a fictional town. Destinations in this town are operators which are applied on the passengers.
+However, there are other themed esoteric languages which read like prose: Programs in \textbf{Chef} read like recipes. The ingredients act as variables---dry ingredients are numbers, and liquid ingredients are Unicode characters. The ingredients can be arranged in \emph{bowls} (stacks) and finally are \emph{baked} (which will output their values). \textbf{Taxi} programs reads like a list of directions for a taxi driver transporting \emph{passengers} (variables) through a fictional town. Destinations in this town are operators which are applied on the passengers.
 
 In a way, these languages are steganographic in that sense that an uninitiated reader would not necessarily expect that these texts are, in fact, meaningful programs.
 
 \subsection{Significance}
 
-After Shakespeare 1.0 was released in August 2001, it gained popularity after it was mentioned on the Slashdot news portal \cite{tjernlund2001shakespeare}.
-
-Shakespeare can be shown to be Turing-complete by describing a method to execute Brainfuck programs in Shakespeare, using two characters, whose stacks emulate Brainfuck's tape, and using scenes and goto statements for loops \cite{stux2005shakespeare}.
-
-Soon after the language's release, the authors were asked by David Touretzky whether they would implement DeCSS in Shakespeare, an algorithm used to decrypt DVDs whose publication was prohibited in some contries because of copyright infringement reasons. A performance of such a program would be protected by free speech laws and could have been legally exported to other countries \cite{herrick2011az}. While they didn't do this because of time reasons, this example demonstrates Shakespeare's versatility.
+After Shakespeare 1.0 was released in August 2001, it gained popularity after it was mentioned on the Slashdot news portal \cite{tjernlund2001shakespeare}. Soon after the language's release, the authors were asked by David Touretzky whether they would implement DeCSS in Shakespeare, an algorithm used to decrypt DVDs whose publication was prohibited in some countries because of copyright infringement reasons. A performance of such a program would be protected by free speech laws and could have been legally exported to other countries \cite{herrick2011az}. While they did not do this because of time reasons, this example demonstrates Shakespeare's versatility.
 
 In fact, in the keynote of ACM's third \emph{History of Programming Languages conference} in 2007 \cite{chapiewski2007computational}, Guy Steele and Richard Gabriel showed a recorded performance of an actual Shakespeare program that outputs powers of two.

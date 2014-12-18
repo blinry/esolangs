@@ -1,61 +1,55 @@
-Brainfuck is a well-known minimalistic programming language, aiming for a small language syntax and small compilers. Its programs consist of only eight characters, nevertheless, it was proven to be Turing complete.
+The first language, we are going to look at, Brainfuck, is a well-known minimalistic programming language, aiming for a small language syntax and small compilers. Its programs consist of only eight characters, nevertheless, it was proven to be Turing complete.
 
-\subsection{History}
+\subsection{Origin}
 
-Brainfuck was designed by Urban Müller, a Swiss physics student who in 1992 took over a small online archive for Amiga software. Back then it had around 40 visits per day. The archive grew more popular, and was soon mirrored around the world. Today, it is the world's largest Amiga archive, known as \emph{Aminet} \cite{muller1993aminet}.
+Brainfuck was designed by Urban Müller in 1993. At that time, he was a Swiss physics student who in 1992 took over a small online archive for Amiga software. The archive grew more popular, and was soon mirrored around the world. Today, it is the world's largest Amiga archive, known as \emph{Aminet} \cite{muller1993aminet}. We mention this platform because in 1993, Müller uploaded the first Brainfuck compiler to Aminet, in the form of a machine language implementation that compiled to a binary with a size of 296 bytes \cite{muller1993240}. The program came with a \textsc{Readme} file, which briefly described the language, and challenged the reader “Who can program anything useful with it?~:)”. Müller included some already quite elaborate examples as well.
 
-We mention this platform because in 1993, Müller uploaded the first Brainfuck compiler onto \emph{Aminet}, in the form of a machine language implementation resulting in an executable of 296 bytes. The program came with a README file which briefly described the language, and challenged the reader “Who can program anything useful with it?~:)”. Müller included some already quite elaborate examples, as well \cite{muller1993240}. The name is a reference to the slang term “brain fuck”, basically referring to things that are so complicated or unusual that they reach the limits of your comprehension.
+The language's name is a reference to the slang term “brain fuck”, which refers to things that are so complicated or unusual that they go beyond the limits of one's comprehension.
 
-As Aminet grew, the compiler became popular amongst the Amiga community, and in time it was implemented for other platforms. Some thorough sources of information about Brainfuck are TODO. Refer to \Cref{sec:brainfuck_variants} for an overview of Brainfuck variants.
-
-Nowadays, Brainfuck is probably the best-known esoteric programming language. It is a common programming exercise to implement a Brainfuck interpreter or compiler in another language (although people also have written Brainfuck compilers in Brainfuck itself). Fans of the language succeeded in implementing even smaller compilers than the original version, the smallest one currently is a MS-DOS binary with a size of 98 bytes \cite{inte1999entry}.
+As Aminet grew, the compiler became popular amongst the Amiga community, and in time it was implemented for other platforms. Refer to \Cref{sec:brainfuck_variants} for an overview of Brainfuck variants.
 
 \subsection{Description}
 
-A Brainfuck program operates on an infinite linear arrangement of memory cells, often called the \emph{tape}. Each memory cell contains an unsigned byte (a number between 0 and 255), which are all initialized to 0 when the program starts. Additionally, Brainfuck maintains a \emph{head}, which points to one of the memory cells.
+A Brainfuck program operates on an infinite linear arrangement of memory cells, often called the \emph{tape}. Each memory cell contains an unsigned byte value (a number between 0 and 255), which is initialized to 0 when the program starts. Additionally, Brainfuck maintains a \emph{head}, which points to one of the memory cells.
 
-Syntax-wise, a Brainfuck program consists of eight different symbols, which have the following semantics:
+Syntax-wise, a Brainfuck program can consist of eight different characters, which have the following semantics:
 
 \begin{description}[labelsep=1em]
     \item[\texttt{>}] Move the head to the right.
     \item[\texttt{<}] Move the head to the left.
     \item[\texttt{+}] Increment the current cell's value.
     \item[\texttt{-}] Decrement the current cell's value.
-    \item[\texttt{,}] Read an ASCII character from the user, write its value to the current cell.
-    \item[\texttt{.}] Output the current cell's value as an ASCII character.
+    \item[\texttt{,}] Read an \ascii{} character from the user, write its value to the current cell.
+    \item[\texttt{.}] Output the current cell's value as an \ascii{} character.
     \item[\texttt{[}] If the current cell contains a 0, skip to the matching closing bracket.
     \item[\texttt{]}] If the current cell does not contain a 0, return to the matching opening bracket.
 \end{description}
 
 Other characters in the source code are ignored (which allows for inline documentation, and for embedding Brainfuck in other programs). While in- or decrementing, the cells' values always wrap to stay between 0 and 255.
 
-Using the brackets, the programmer can realize a \texttt{while}-loop: The expression
+Using the brackets, the programmer can create loops: The expression
 
 \begin{quotation}
-    \texttt{[}<code>\texttt{]}
+    \texttt{[}\textit{code}\texttt{]}
 \end{quotation}
 
-will execute <code> until the cell currently pointed at is 0. For example, the expression
+will execute \textit{code} until the cell currently pointed to is 0 when encountering the closing bracket. For example, the expression
 
 \begin{quotation}
     \texttt{[->+<]}
 \end{quotation}
 
-will add the current cell's value to the cell next to it by decrementing the current cell, going right, incrementing, and going left again. This sequence is repeated until the current cell is 0.
-
-Another gadget which we will use in the following example is
+will add the current cell's value to the next cell: Each time the loop is executed, the current cell is decremented, the head moves to the right, that next cell is incremented, and the head moves left again. This sequence is repeated until the starting cell is 0. Another gadget which we will use in the following example is
 
 \begin{quotation}
     \texttt{+[->+]-}
 \end{quotation}
 
-which moves the head to the right until it points to a cell with the value 255. The \texttt{+} operators increment the cell's value before each check, if it was a 255 before, the value will wrap to a 0, and the loop will terminate. The \texttt{-} operators reset the cell to its original value before the cell is left.
-
-Brainfuck was proven to be Turing complete by Daniel Cristofani \cite{cristofani-universal}, who used it to implement a simple universal Turing machine as described by Yurii Rogozhin \cite{rogozhin1996small}. In fact, as Brainfuck behaves somewhat similar to a Turing machine, there are many ways one can show Turing completeness. Note that these proofs only work when an infinite tape is assumed, actual implementations cannot provide that because of memory limitations.
+which moves the head to the right until it points to a cell with the value 255. The \texttt{+} operators increment the cell's value before each check, and if it was a 255 before, the value will wrap to a 0, and the loop will terminate. The \texttt{-} operators reset the cell to its original value before the cell is left.
 
 \subsection{Example}
 
-The following program reads a sequence of ASCII values from the user, and prints their binary representations. In order to demonstrate Brainfuck's unique aesthetic, the program is first shown in its minified form:
+The following program reads a sequence of \ascii{} values from the user, and prints their binary representations. In order to demonstrate Brainfuck's unique aesthetic, the program is first shown in its minified form:
 
 \lstinputlisting{brainfuck/ascii-min.b}
 
@@ -64,22 +58,33 @@ Input: @\texttt{hello}@
 Output: @\texttt{0110100001100101011011000110110001101111}@
 \end{io}
 
-Let's look at it in more detail. The following commented version can be broken down into three sections: Line 1 sets up the basic memory layout, which is restored for each character the user enters. The program uses a “sentinel” cell with the special value 255 to facilitate seeking back to the end of the bit array. Line 10 reads the character, lines 11--18 implement a simple bit shift register to calculate the binary representation. The remaining lines print the binary digits by calculating the digits' ASCII values (48 for “0” or 49 for “1”). Note that lines 21---25 are equivalent to \texttt{++++++++++++++++++++++++++++++++++++++++++++++++}, which would also increment the cells' values by 48, but we wanted to demonstrate a more esoteric (and a more concise) approach here, which is why the actual code increases the value by 6 eight times.
+Let us look at it in more detail. The following commented version can be broken down into three sections: Line 1 sets up the basic memory layout, which is restored for each character the user enters. The program uses a “sentinel” cell with the special value 255 to facilitate seeking back to the end of the bit array. Line 10 reads the character, lines 11--18 implement a simple shift register to calculate the binary representation. The remaining lines print the binary digits by calculating the digits' \ascii{} values (48 for “0” or 49 for “1”). Note that lines 21---26 are equivalent to \texttt{++++++++++++++++++++++++++++++++++++++++++++++++}, which would also increment the cells' values by 48, but we wanted to demonstrate a more esoteric (and a more concise) approach here, which is why the actual code increases the value by 6 eight times.
+
 
 \lstinputlisting{brainfuck/ascii.b}
+
+\subsection{Computational Class}
+
+Brainfuck was proven to be Turing complete by Daniel Cristofani \cite{cristofani-universal}, who used it to implement a simple universal Turing machine as described by Yurii Rogozhin \cite{rogozhin1996small}. In fact, as Brainfuck behaves somewhat similar to a Turing machine, there are many ways one can show Turing completeness. Note that these proofs only work when an infinite tape is assumed, actual implementations cannot provide that because of memory limitations. The problem is that the implementation of a universal Turing machine would have to be able to deal arbitrarily long input. No finite amount of memory can guarantee that.
+
+Brainfuck is an example of a so-called \emph{Turing tarpit}. This term was coined in 1992 by Alan Perlis, first recipient of the Turing Award, who warned against environments “in which everything is possible but nothing of interest is easy” \cite{perlis1982epigrams}, in reference to geologic asphalt lakes, whose thick consistency slows down movements for everything inside. Turing tarpit languages, like Brainfuck, provide a handful of very general and flexible mechanisms, which can be used to write \emph{any} program, but it is seldomly practical to do so, because the languages provide so little abstraction that the programs get very long or complicated.
+
 
 \subsection{Variants}
 \label{sec:brainfuck_variants}
 
-The esolangs wiki \cite{esolang}, a large database of esoteric programming topics, and informal successor of Chris Pressey's previously mentioned \emph{Esoteric Topics} site, lists 162 articles in the “Brainfuck derivatives” category and 33 “Brainfuck equivalents”, which were all inspired by Müller's original implementation. There are variants which operate on two tapes (\textbf{DoubleFuck}), restrict the cells to binary values, thus making the \texttt{+} and \texttt{-} operations identical (\textbf{Boolfuck}). Some add more operators (like \textbf{Brainfork}, which adds a \texttt{Y} command for forking the process), others try to reduce the command set even further (\textbf{BitChanger} also works on bit cells and defines \texttt{\}} $:=$ \texttt{>+}. The original \texttt{>} can be emulated with \texttt{\}<\}}).
-The joke variant \textbf{Ook!} behaves exactly like Brainfuck, but it's operators are pairs of Orangutan words like “Ook. Ook?” for \texttt{>} or “Ook! Ook!” for \texttt{-}.
+The esolangs wiki \cite{esolang}, a large database of esoteric programming topics, and informal successor of Chris Pressey's previously mentioned \emph{Esoteric Topics} site, lists 162 articles in the “Brainfuck derivatives” category and 33 “Brainfuck equivalents”, which were all inspired by Müller's original implementation. There are variants which operate on two tapes (\textbf{DoubleFuck}), or restrict the cells to binary values, thus making the \texttt{+} and \texttt{-} operations identical (\textbf{Boolfuck}). Some add more operators (like \textbf{Brainfork}, which adds a \texttt{Y} command for forking the process), others try to reduce the command set even further (\textbf{BitChanger} also works on bit cells and defines \texttt{\}} $:=$ \texttt{>+}. The original \texttt{>} can be emulated with \texttt{\}<\}}).
+The joke variant \textbf{Ook!} behaves exactly like Brainfuck, but its operators are pairs of Orangutan words like “Ook. Ook?” for \texttt{>} or “Ook! Ook!” for \texttt{-}.
 
 Because there never was a precise language specification, the various implementations can differ in some aspects:
 Whereas the general idea assumes an infinitely long tape, actual implementations always have some kind of memory limit. The original compiler used a tape of 30,000 cells, with the pointer starting on the leftmost one. Some implementations extend the memory array when the pointer steps out of the allocated range, others crash, others again will wrap around the tape.
 The size of a cell was one byte in the original implementation, wrapping around to 255 when subtracting from 0, and many implementations follow that design. Others use 16- or 32-bit numbers, or even signed numbes, allowing the cells to have negative values.
 Another implementation difference is about what happens when a Brainfuck programs wants to read a byte, but there is no more input---for example, because the input was a file which has reached the end-of-file condition. In many applications, it is important to know that there will be no more input. Müller's implementation leaves the current cell unchanged in this case, others set it to 0, others to -1 (this requires cells which are larger than bytes).
 
-\subsection{Brainfuck's grandparent}
+\subsection{Significance}
+
+Nowadays, Brainfuck is probably the best-known esoteric programming language. It is a common programming exercise to implement a Brainfuck interpreter or compiler in another language (although people also have written Brainfuck compilers in Brainfuck itself). Fans of the language succeeded in implementing even smaller compilers than the original version, the smallest one currently is a MS-DOS binary with a size of 98 bytes \cite{inte1999entry}\footnote{Fun fact: This sentence is about twice as long as that compiler.}.
+
 \label{pprimeprime}
 
 Interestingly, Brainfuck had a much earlier predecessor: In 1964, the theoretical computer scientist Corrado Böhm designed the language $\mathcal{P}''$, to describe a specific family of Turing machines \cite{bohm1964family}. Böhm showed that this language was Turing-complete long before Brainfuck was implemented. Programs in $\mathcal{P}''$ consist of words over the alphabet $\{R, \lambda, (, )\}$. $\mathcal{P}''$ operates on a left-infinite tape, which can contain symbols of an alphabet $\{a_0, a_1, \dots, a_n\}$. Initially, each memory cell contains $a_0$, the \emph{blank symbol}. The symbols' semantics are as follows:
@@ -100,20 +105,20 @@ Each Brainfuck program can be translated  to a $\mathcal{P}''$ program using the
     \text{\texttt{]}} &\rightarrow )
 \end{align*}
 
-That is, to perform a Brainfuck increment, increment and move left, then move right. To decrement, increment the current symbol $n$ times, it will “wrap around” and come to halt one symbol before it started. To move left, “decrement” the cell, then perform a $\lambda$ operation.
+That is, to perform a Brainfuck increment, increment and move left, then move right. To decrement, increment the current symbol $n$ times, until it “wraps around” and comes to halt one symbol before it started. To move left, “decrement” the cell, then perform a $\lambda$ operation.
 
-\subsection{OISCs}
-
-Note that $\mathcal{P}''$ only uses four symbols. So called \emph{one instruction set computers} (OISC) go even further, by reducing the number of possible operations to one. A common example is the “subtract and branch if less than or equal to zero” operation, also known as \texttt{subleq}. It takes three memory pointers $a$, $b$ and $c$ as its operands, subtracts the value at $a$ from the value at $b$, writes the result back to $b$ and jumps to $c$ if it is not positive. One can synthesise all other operators from this single one, for example, an unconditional jump:
-
-\begin{lstlisting}
-subleq a a c // jump to c, a-a is always 0
-\end{lstlisting}
-
-or addition:
-
-\begin{lstlisting}
-subleq c c 2 // c = 0, jump to the next line
-subleq a c 3 // c' = c-a = -a
-subleq c b 4 // b = b-c' = a+b
-\end{lstlisting}
+%\subsection{OISCs}
+%
+%Note that $\mathcal{P}''$ only uses four symbols. So called \emph{one instruction set computers} (OISC) go even further, by reducing the number of possible operations to one. A common example is the “subtract and branch if less than or equal to zero” operation, also known as \texttt{subleq}. It takes three memory pointers $a$, $b$ and $c$ as its operands, subtracts the value at $a$ from the value at $b$, writes the result back to $b$ and jumps to $c$ if it is not positive. One can synthesise all other operators from this single one, for example, an unconditional jump:
+%
+%\begin{lstlisting}
+%subleq a a c // jump to c, a-a is always 0
+%\end{lstlisting}
+%
+%or addition:
+%
+%\begin{lstlisting}
+%subleq c c 2 // c = 0, jump to the next line
+%subleq a c 3 // c' = c-a = -a
+%subleq c b 4 // b = b-c' = a+b
+%\end{lstlisting}
