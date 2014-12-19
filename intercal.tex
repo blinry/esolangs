@@ -58,7 +58,7 @@ To exit a program, the statement \texttt{GIVE UP} must be used.
 
 \subsection{Example}
 
-The following prgrams calculates $2^n$ for some $n$ entered by the user. In line 1, the exponent is read from standard input and stored in the variable \texttt{.1}, which is also used as a loop variable. The variable \texttt{.4} will later contain the result and is initialized to 1. In line 3, \texttt{.2} is set to 1 as well, it will later be used to decrement the loop variable.
+The following programs calculates $2^n$ for some $n$ entered by the user. In line 1, the exponent is read from standard input and stored in the variable \texttt{.1}, which is also used as a loop variable. The variable \texttt{.4} will later contain the result and is initialized to 1. In line 3, \texttt{.2} is set to 1 as well, it will later be used to decrement the loop variable.
 
 Lines 5 and 12 set up a loop: After line 12 is executed, the expression in line 5 is evaluated. The expression selects from \texttt{.1} all bits where \texttt{.1} itself has a 1. That is, if \texttt{.1} contains any 1's at all, \texttt{.1\~{}.1} will end with at least one 1. From this value, we select the last bit. So, the whole expression is 1 exactly if \texttt{.1} is not zero. As a result, as long as \texttt{.1} is not zero yet, a jump from line 12 back to line 5 will occur.
 
@@ -77,7 +77,7 @@ Output: MXXIV
 
 \subsection{Implementations}
 
-The original implementation by Woods and Lyon, which translated \ic{} to \textsc{Snobol}, a pattern-centered language developed in 1962, seems to have been lost over the years. In 1990, the American software developer Eric Raymond revived the language by releasing \textbf{C-INTERCAL} \cite{raymond_intercal}, an \ic{} compiler written in the C programming language, which is by far the best known implementation today. Raymond enhanced the instruction manual \cite{raymond2010cintercal} significantly and added some new features (see next section). C-\ic{} does some internal optimizations, like pre-computing the result of operations on constant values. Interestingly, C-\ic{} allows for linking with Befunge programs.
+The original implementation by Woods and Lyon, which translated \ic{} to \textsc{Snobol}, a pattern-centered language developed in 1962, seems to have been lost over the years. In 1990, the American software developer Eric Raymond revived the language by releasing \textbf{C-INTERCAL} \cite{raymond_intercal}, an \ic{} compiler written in the C programming language, which is by far the best known implementation today. Raymond enhanced the instruction manual \cite{raymond2010cintercal} significantly and added some new features (see next section). C-\ic{} does some internal optimization, like pre-computing the result of operations on constant values. Interestingly, C-\ic{} allows for linking with Befunge programs.
 
 \subsection{Variants}
 \label{intercal-variants}

@@ -2,13 +2,13 @@ Befunge is a self-modifying, stack-based, two-dimensional language. It is simila
 
 \subsection{Origin}
 
-Befunge was intenved in 1993 by Chris Pressey, and is believed to be the first two-dimensional esoteric programming language. Pressey's motivation was to create a language which was as difficult to compile as possible. Not only the multi-dimensionality complicate the compilation process, but also Befunge's ability to modify its own source code. Befunge's stack-based computational model was inspired by Forth. According to Pressey \cite{pressey_coleman}, the name “Befunge” was originally a mistyping of “before”, typed by Curtis Coleman in a BBS chat system at 4AM.
+Befunge was invented in 1993 by Chris Pressey, and is believed to be the first two-dimensional esoteric programming language. Pressey's motivation was to create a language which was as difficult to compile as possible. Not only the multi-dimensionality complicate the compilation process, but also Befunge's ability to modify its own source code. Befunge's stack-based computational model was inspired by Forth. According to Pressey \cite{pressey_coleman}, the name “Befunge” was originally a mistyping of “before”, typed by Curtis Coleman in a BBS chat system at 4AM.
 
 In this paper, we will focus on \textbf{Befunge-93}, the language's original version.
 
 \subsection{Description}
 
-Programs in Befunge are a grid of \ascii{} characters with a width of 80 and a height of 25 (a common size of old terminal emulators like the VT100), called the \emph{playfield}. Like in Brainfuck, there is an instruction pointer, which starts at the topleft entry, moving right. When the pointer leaves the playfield, it wraps around to the other side. Encountered instructions are executed. The pointer keeps moving in the same direction, if it is not changed.
+Programs in Befunge are a grid of \ascii{} characters with a width of 80 and a height of 25 (a common size of old terminal emulators like the VT100), called the \emph{playfield}. Like in Brainfuck, there is an instruction pointer, which starts at the top-left entry, moving right. When the pointer leaves the playfield, it wraps around to the other side. Encountered instructions are executed. The pointer keeps moving in the same direction, if it is not changed.
 
 Befunge also maintains a stack of values, which can be manipulated in various ways. Befunge has a large instruction set of 36 different commands, but in contrast to other languages, they are really easy to understand:
 
@@ -50,7 +50,7 @@ Note that as calculations are done on the stack, they must be written down in po
 
 \subsection{Example}
 
-The following program reads characters from the standard input, and performs the ROT13 operation on them, which moves letters by 13 places forward in the alphabet, wrapping from Z back to A. Lowercase and uppercase letters are moved seperately. Applying ROT13 to a text will restore the original. This operation is sometimes used in forums to hide spoilers from plain view, while making it trivial to en- and decode it.
+The following program reads characters from the standard input, and performs the ROT13 operation on them, which moves letters by 13 places forward in the alphabet, wrapping from Z back to A. Lowercase and uppercase letters are moved separately. Applying ROT13 to a text will restore the original. This operation is sometimes used in forums to hide spoilers from plain view, while making it trivial to en- and decode it.
 
 \lstinputlisting[frame=tbrl,basicstyle=\ttfamily\footnotesize]{befunge/rot13.bf}
 
@@ -69,11 +69,11 @@ The execution starts with the first character in the first line. When first enco
 
 The last instruction on that line, the \texttt{v}, moves the instruction pointer to the first conditional statement in line 2. If there is a 0 on the stack, which is the case if the original letter came after \texttt{`} in the \ascii{} table, the pointer moves right, otherwise left. If it moves right, the original value is duplicated again and now compared to \texttt{z} in exactly the same way as in line 1. This time, the truth value is not inverted, so that we move left if our letter was larger than \texttt{z}, and right otherwise. If moving right, we know that we have a lowercase letter.
 
-In line 3, it is finally compared to \texttt{m}, and control is transfered to the small C-shaped construct in the midele of the program, coming from the right in line 5.
+In line 3, it is finally compared to \texttt{m}, and control is transferred to the small C-shaped construct in the middle of the program, coming from the right in line 5.
 
-Depending on whether our letter is in the range \texttt{a}--\texttt{m} or in the range \texttt{n}--\texttt{z}, the pointer moves down or up at the \texttt{|} instruction. If it ends up in the lower half, 13 is added, by pushing first a 9 on the stack, then adding it, then doing the same with a 4. Otherwise, it is subtracted. Finally, control is transfered to the first \emph{column} (the detailed version uses bridges (\texttt{\#}) to jump over the \texttt{v} lane), where the resulting letter is finally printed with the \texttt{,} instrction. After that, the first \texttt{>} in line 1 closes the loop, and the process is started again.
+Depending on whether our letter is in the range \texttt{a}--\texttt{m} or in the range \texttt{n}--\texttt{z}, the pointer moves down or up at the \texttt{|} instruction. If it ends up in the lower half, 13 is added, by pushing first a 9 on the stack, then adding it, then doing the same with a 4. Otherwise, it is subtracted. Finally, control is transferred to the first \emph{column} (the detailed version uses bridges (\texttt{\#}) to jump over the \texttt{v} lane), where the resulting letter is finally printed with the \texttt{,} instruction. After that, the first \texttt{>} in line 1 closes the loop, and the process is started again.
 
-Note that when we find that our letter is smaller than \texttt{`} in line 2, we move left, and then down to line 9. Here the same process is repeated for uppercase letters, which are larger than \texttt{@}, smaller or equal to \texttt{Z}, and also dividable into two groups with the \texttt{M}. The inner part is reused. At all other failing tests, control is transfered back to column 1, and the character is eventually output, whether it was changed (in case of letters) or not (in all other cases).
+Note that when we find that our letter is smaller than \texttt{`} in line 2, we move left, and then down to line 9. Here the same process is repeated for uppercase letters, which are larger than \texttt{@}, smaller or equal to \texttt{Z}, and also dividable into two groups with the \texttt{M}. The inner part is reused. At all other failing tests, control is transferred back to column 1, and the character is eventually output, whether it was changed (in case of letters) or not (in all other cases).
 
 \subsection{Computational Class}
 
@@ -81,7 +81,7 @@ Because of its hard space limitations ($80\cdot 25$ bytes), Befunge is not Turin
 
 \subsection{Implementations}
 
-Pressey's original implementation, \emph{bef2c} \cite{pressey1993befunge}, compiles Befunge-93 to C, but the resulting program works like an interpreter, which does not allow for much optimization. Some more advanced compilers, like \emph{befunjit} \cite{toncean_befunge} follow a just-in-time approach: Instead of executing the instructions one by one, they look for the longest static path (which does not contain any conditinal execution), precompiles it for a much faster execution. If the \texttt{p} instruction changes some of these paths by writing in them, they are invalidated and recompiled. \emph{Befungee} \cite{mcenroe_befunge} is a interpreter written in Python that provides with a graphical debugger. Recently, \emph{Befunge for Android} was released \cite{alexander_befunge}, which provides a “graphical” interface and a step-by-step function.
+Pressey's original implementation, \emph{bef2c} \cite{pressey1993befunge}, compiles Befunge-93 to C, but the resulting program works like an interpreter, which does not allow for much optimization. Some more advanced compilers, like \emph{befunjit} \cite{toncean_befunge} follow a just-in-time approach: Instead of executing the instructions one by one, they look for the longest static path (which does not contain any conditional execution), precompiles it for a much faster execution. If the \texttt{p} instruction changes some of these paths by writing in them, they are invalidated and recompiled. \emph{Befungee} \cite{mcenroe_befunge} is a interpreter written in Python that provides with a graphical debugger. Recently, \emph{Befunge for Android} was released \cite{alexander_befunge}, which provides a “graphical” interface and a step-by-step function.
 
 \subsection{Variants}
 

@@ -1,4 +1,4 @@
-The first language, we are going to look at, Brainfuck, is a well-known minimalistic programming language, aiming for a small language syntax and small compilers. Its programs consist of only eight characters, nevertheless, it was proven to be Turing complete.
+The first language, we are going to look at, Brainfuck, is a well-known minimalist programming language, aiming for a small language syntax and small compilers. Its programs consist of only eight characters, nevertheless, it was proven to be Turing complete.
 
 \subsection{Origin}
 
@@ -6,7 +6,7 @@ Brainfuck was designed by Urban Müller in 1993. At that time, he was a Swiss ph
 
 The language's name is a reference to the slang term “brain fuck”, which refers to things that are so complicated or unusual that they go beyond the limits of one's comprehension.
 
-As Aminet grew, the compiler became popular amongst the Amiga community, and in time it was implemented for other platforms. Refer to \Cref{sec:brainfuck_variants} for an overview of Brainfuck variants.
+As Aminet grew, the compiler became popular among the Amiga community, and in time it was implemented for other platforms. Refer to \Cref{sec:brainfuck_variants} for an overview of Brainfuck variants.
 
 \subsection{Description}
 
@@ -67,7 +67,7 @@ Let us look at it in more detail. The following commented version can be broken 
 
 Brainfuck was proven to be Turing complete by Daniel Cristofani \cite{cristofani_universal}, who used it to implement a simple universal Turing machine as described by Yurii Rogozhin \cite{rogozhin1996small}. In fact, as Brainfuck behaves somewhat similar to a Turing machine, there are many ways one can show Turing completeness. Note that these proofs only work when an infinite tape is assumed, actual implementations cannot provide that because of memory limitations. The problem is that the implementation of a universal Turing machine would have to be able to deal arbitrarily long input. No finite amount of memory can guarantee that.
 
-Brainfuck is an example of a so-called \emph{Turing tarpit}. This term was coined in 1992 by Alan Perlis, first recipient of the Turing Award, who warned against environments “in which everything is possible but nothing of interest is easy” \cite{perlis1982epigrams}, in reference to geologic asphalt lakes, whose thick consistency slows down movements for everything inside. Turing tarpit languages, like Brainfuck, provide a handful of very general and flexible mechanisms, which can be used to write \emph{any} program, but it is seldomly practical to do so, because the languages provide so little abstraction that the programs get very long or complicated.
+Brainfuck is an example of a so-called \emph{Turing tarpit}. This term was coined in 1992 by Alan Perlis, first recipient of the Turing Award, who warned against environments “in which everything is possible but nothing of interest is easy” \cite{perlis1982epigrams}, in reference to geologic asphalt lakes, whose thick consistency slows down movements for everything inside. Turing tarpit languages, like Brainfuck, provide a handful of very general and flexible mechanisms, which can be used to write \emph{any} program, but it is seldom practical to do so, because the languages provide so little abstraction that the programs get very long or complicated.
 
 \subsection{Implementations}
 
@@ -81,7 +81,7 @@ The joke variant \textbf{Ook!} behaves exactly like Brainfuck, but its operators
 
 Because there never was a precise language specification, the various implementations can differ in some aspects:
 Whereas the general idea assumes an infinitely long tape, actual implementations always have some kind of memory limit. The original compiler used a tape of 30,000 cells, with the pointer starting on the leftmost one. Some implementations extend the memory array when the pointer steps out of the allocated range, others crash, others again will wrap around the tape.
-The size of a cell was one byte in the original implementation, wrapping around to 255 when subtracting from 0, and many implementations follow that design. Others use 16- or 32-bit numbers, or even signed numbes, allowing the cells to have negative values.
+The size of a cell was one byte in the original implementation, wrapping around to 255 when subtracting from 0, and many implementations follow that design. Others use 16- or 32-bit numbers, or even signed numbers, allowing the cells to have negative values.
 Another implementation difference is about what happens when a Brainfuck programs wants to read a byte, but there is no more input---for example, because the input was a file which has reached the end-of-file condition. In many applications, it is important to know that there will be no more input. Müller's implementation leaves the current cell unchanged in this case, others set it to 0, others to -1 (this requires cells which are larger than bytes).
 
 \subsection{Significance}
