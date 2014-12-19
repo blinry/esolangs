@@ -1,6 +1,6 @@
 Shakespeare is an esoteric language whose programs resembles Shakespearian plays. It is an example for lanuages whose primary characteristic is an overall theme, rather than being defined by their programming paradigms.
 
-\subsection{Origins}
+\subsection{Origin}
 
 The Shakespeare Programming Language (originally SPL, but we will refer to it here as “Shakespeare”) was created in 2001 by Karl Hasselström and Jon Åslund who were studying Computer Science at the Royal Institute of Technology in Stockholm at the time. According to the language documentation \cite{hasselstrom2001shakespeare}, they were given an freestyle assignment in their Syntax Analysis class that challenged them to apply what they had learned. They were familiar with at least Brainfuck and Malboge, and so decided to design and implement their own esoteric programming language. By a coincidence, they had occupied themselves with Shakespeare's works a short while before, and thought the formal structure of a play would suit a programming language quite well. After some months of work, they released the first version of the Shakespeare documentation to the Internet, along with a Shakespeare-to-C translator based on the standard UNIX lexer and parser tools \texttt{bison} and \texttt{flex}.
 
@@ -105,6 +105,10 @@ Output:
 \subsection{Computational Class}
 
 Shakespeare can be shown to be Turing-complete by describing a method to execute Brainfuck programs in Shakespeare, using two characters, whose stacks emulate Brainfuck's tape, and using scenes and goto statements for loops \cite{stux2005shakespeare}.
+
+\subsection{Implementations}
+
+The original Shakespeare-to-C compiler \cite{hasselstrom_shakespeare} by Hasselström and Åslund is the de-facto standard. There is also a Perl module \cite{barr_lingua}, which makes use of metaprogramming to allow the programmer to write Shakespeare code directly in a Perl program.
 
 \subsection{Variants}
 

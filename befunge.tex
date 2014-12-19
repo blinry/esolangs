@@ -2,7 +2,7 @@ Befunge is a self-modifying, stack-based, two-dimensional language. It is simila
 
 \subsection{Origin}
 
-Befunge was intenved in 1993 by Chris Pressey, and is believed to be the first two-dimensional esoteric programming language. Pressey's motivation was to create a language which was as difficult to compile as possible. According to Pressey \cite{presseycoleman}, the name “Befunge” was originally a mistyping of “before”, typed by Curtis Coleman in a BBS chat system at 4AM.
+Befunge was intenved in 1993 by Chris Pressey, and is believed to be the first two-dimensional esoteric programming language. Pressey's motivation was to create a language which was as difficult to compile as possible. According to Pressey \cite{pressey_coleman}, the name “Befunge” was originally a mistyping of “before”, typed by Curtis Coleman in a BBS chat system at 4AM.
 
 \todo[inline]{More content.}
 
@@ -81,14 +81,20 @@ Note that when we find that our letter is smaller than \texttt{`} in line 2, we 
 
 Because of its hard space limitations ($80\cdot 25$ bytes), Befunge is not Turing-complete. Without this limitation, it would be relatively easy to implement a Brainfuck interpreter in it.
 
+\subsection{Implementations}
+
+Pressey's original implementation, \emph{bef2c} \cite{pressey1993befunge}, compiles Befunge-93 to C, but the resulting program works like an interpreter, which does not allow for much optimization. Some more advanced compilers, like \emph{befunjit} \cite{toncean_befunge} follow a just-in-time approach: Instead of executing the instructions one by one, they look for the longest static path (which does not contain any conditinal execution), precompiles it for a much faster execution. If the \texttt{p} instruction changes some of these paths by writing in them, they are invalidated and recompiled. \emph{Befungee} \cite{mcenroe_befunge} is a interpreter written in Python that provides with a graphical debugger. Recently, \emph{Befunge for Android} was released \cite{alexander_befunge}, which provides a “graphical” interface and a step-by-step function.
+
 \subsection{Variants}
 
 In 1998, Pressey released \textbf{Befunge-98}, which removes the size restriction of the playfield, making the language Turing-complete. Actually, Befunge-98 is a member of a generalized family of languages, the \textbf{Funge-98} family. Its members are \textbf{Unefunge}, \textbf{Befunge}, and \textbf{Trefunge}, which operate in one, two, or three dimensions respectively. In Trefunge, the \emph{form feed} character (with \ascii{} value 12, formerly used to eject a page from printers), is used to increase the z-coordinate of the source code, thus going to the next “layer” of the program.
 
 There are also many more languages inspired by Befunge. \textbf{Wierd}, created as a collaboration on the Befunge mailing list by Pressey, Ben Olmstead (who would later create Malbolge), and John Colagioia, attempts to trim down the number of instructions. In fact, there is only one instruction: All non-whitespace characters are treated the same. The semantic is defined by the angles formed by lines of characters in the 2D space. \textbf{PATH} is a crossover between Befunge and Brainfuck: The program's source code is one-dimensional, but the data pointer lives in a two-dimensional field. 
 
-\subsection{Relevance}
+http://catseye.tc/node/Befunge-93.html
+
+\subsection{Significance}
 
 In 1996, Pressey invited interested persons to join the \emph{Befunge Mailing List}, where they discussed the language and shared code and ideas \cite{pressey1996welcome}. It later evolved into the \emph{Esoteric Topics Mailing List}, which (along with his \emph{Esoteric Topics} page, see \cref{introduction}) seems to have contributed to the usage of the term “esoteric” in terms of programming languages.
 
-Befunge is still quite popular. There are quite a few actively maintained interpreters/compilers, and new variants get published every few months.
+Befunge is still quite popular. There are quite a few actively maintained interpreters/compilers (including Pressey's original implementation), and new variants get published every once in a while.

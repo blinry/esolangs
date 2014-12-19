@@ -75,10 +75,14 @@ Input: ONE ZERO
 Output: MXXIV
 \end{io}
 
+\subsection{Implementations}
+
+The original implementation by Woods and Lyon, which translated \ic{} to \textsc{Snobol}, a pattern-centered language developed in 1962, seems to have been lost over the years. In 1990, the American software developer Eric Raymond revived the language by releasing \textbf{C-INTERCAL} \cite{raymond_intercal}, an \ic{} compiler written in the C programming language, which is by far the best known implementation today. Raymond enhanced the instruction manual \cite{raymond2010cintercal} significantly and added some new features (see next section). C-\ic{} does some internal optimizations, like pre-computing the result of operations on constant values. Interestingly, C-\ic{} allows for linking with Befunge programs.
+
 \subsection{Variants}
 \label{intercal-variants}
 
-In 1990, the American software developer Eric Raymond revived the language by releasing \textbf{C-INTERCAL}, an \ic{} compiler written in the C programming language. Raymond enhanced the instruction manual significantly \cite{raymond2010cintercal}. Compared to the original \ic{} specification, C-\ic{} introduced some additional statements, like the \texttt{COME FROM} statement. It also added a mode called \textbf{TriINTERCAL}, which does not operate on binary values, but on trinary ones. In fact, the implementation supports all number bases up to 7 (base 8 is considered “too useful”).
+Compared to the original \ic{} specification, C-\ic{} introduced some additional statements, like the \texttt{COME FROM} statement. It also added a mode called \textbf{TriINTERCAL}, which does not operate on binary values, but on trinary ones. In fact, the implementation supports all number bases up to 7 (base 8 is considered “too useful”).
 
 C-\ic{} also integrated some features of other \ic{} variants: \textbf{Threaded} \textbf{INTERCAL} spawns multiple threads when there is more than one \texttt{COME FROM} statement for one line. \textbf{Backtracking INTERCAL} introduces the \texttt{MAYBE} label, that can be added to each statement. When encountered, it saves the complete program state, so if the respective choice turns out to be bad, the state can be restored and another decision can be made. This mechanism allows a very elegant formulation of backtracking algorithms.
 
@@ -86,7 +90,7 @@ C-\ic{} also integrated some features of other \ic{} variants: \textbf{Threaded}
 
 As it is rather easy to write an interpreter for $\mathcal{P}''$ (see \cref{pprimeprime}) in \ic{} using the standard library \cite{alksentrs2008intercal}, the language is definitely Turing complete.
 
-\subsection{Relevance}
+\subsection{Significance}
 
 Until today, there's quite a large community around \ic{}. Raymond still actively maintains his C-\ic{} compiler, together with co-maintainer Alex Smith.
 

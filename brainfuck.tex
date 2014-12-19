@@ -65,10 +65,13 @@ Let us look at it in more detail. The following commented version can be broken 
 
 \subsection{Computational Class}
 
-Brainfuck was proven to be Turing complete by Daniel Cristofani \cite{cristofani-universal}, who used it to implement a simple universal Turing machine as described by Yurii Rogozhin \cite{rogozhin1996small}. In fact, as Brainfuck behaves somewhat similar to a Turing machine, there are many ways one can show Turing completeness. Note that these proofs only work when an infinite tape is assumed, actual implementations cannot provide that because of memory limitations. The problem is that the implementation of a universal Turing machine would have to be able to deal arbitrarily long input. No finite amount of memory can guarantee that.
+Brainfuck was proven to be Turing complete by Daniel Cristofani \cite{cristofani_universal}, who used it to implement a simple universal Turing machine as described by Yurii Rogozhin \cite{rogozhin1996small}. In fact, as Brainfuck behaves somewhat similar to a Turing machine, there are many ways one can show Turing completeness. Note that these proofs only work when an infinite tape is assumed, actual implementations cannot provide that because of memory limitations. The problem is that the implementation of a universal Turing machine would have to be able to deal arbitrarily long input. No finite amount of memory can guarantee that.
 
 Brainfuck is an example of a so-called \emph{Turing tarpit}. This term was coined in 1992 by Alan Perlis, first recipient of the Turing Award, who warned against environments “in which everything is possible but nothing of interest is easy” \cite{perlis1982epigrams}, in reference to geologic asphalt lakes, whose thick consistency slows down movements for everything inside. Turing tarpit languages, like Brainfuck, provide a handful of very general and flexible mechanisms, which can be used to write \emph{any} program, but it is seldomly practical to do so, because the languages provide so little abstraction that the programs get very long or complicated.
 
+\subsection{Implementations}
+
+Together with his machine language implementation, Müller published a C interpreter, which---with a minor modification---can still be used on modern machines. Besides that one, there are numerous implementations in all imaginable languages, some of which achieve very fast runtimes by optimizing the code in numerous ways, including \emph{Awib} \cite{linander_awib}, a Brainfuck compiler written in Brainfuck itself, which is able to compile to Linux executables, Tcl, Ruby, Go, and C. Fans of the language succeeded in implementing even smaller compilers than the original version, the smallest one currently is a MS-DOS binary with a size of 98 bytes \cite{inte1999entry}\footnote{Fun fact: This sentence is about twice as long as that compiler.}.
 
 \subsection{Variants}
 \label{sec:brainfuck_variants}
@@ -83,7 +86,7 @@ Another implementation difference is about what happens when a Brainfuck program
 
 \subsection{Significance}
 
-Nowadays, Brainfuck is probably the best-known esoteric programming language. It is a common programming exercise to implement a Brainfuck interpreter or compiler in another language (although people also have written Brainfuck compilers in Brainfuck itself). Fans of the language succeeded in implementing even smaller compilers than the original version, the smallest one currently is a MS-DOS binary with a size of 98 bytes \cite{inte1999entry}\footnote{Fun fact: This sentence is about twice as long as that compiler.}.
+Nowadays, Brainfuck is probably the best-known esoteric programming language. It is a common programming exercise to implement a Brainfuck interpreter or compiler in another language.
 
 \label{pprimeprime}
 
