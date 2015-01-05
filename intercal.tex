@@ -82,7 +82,7 @@ The original implementation by Woods and Lyon, which translated \ic{} to \textsc
 \subsection{Variants}
 \label{intercal-variants}
 
-Compared to the original \ic{} specification, C-\ic{} introduced some additional statements, like the \texttt{COME FROM} statement. It also added a mode called \textbf{TriINTERCAL}, which does not operate on binary values, but on trinary ones. In fact, the implementation supports all number bases up to 7 (base 8 is considered “too useful”).
+Compared to the original \ic{} specification, C-\ic{} introduced some additional statements, like the \texttt{COME FROM} statement. It also added a mode called \textbf{TriINTERCAL}, which does not operate on binary values, but on ternary ones (with a base of 3). In fact, the implementation supports all number bases up to 7 (base 8 is considered “too useful”).
 
 C-\ic{} also integrated some features of other \ic{} variants: \textbf{Threaded} \textbf{INTERCAL} spawns multiple threads when there is more than one \texttt{COME FROM} statement for one line. \textbf{Backtracking INTERCAL} introduces the \texttt{MAYBE} label, that can be added to each statement. When encountered, it saves the complete program state, so if the respective choice turns out to be bad, the state can be restored and another decision can be made. This mechanism allows a very elegant formulation of backtracking algorithms.
 

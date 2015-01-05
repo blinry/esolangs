@@ -2,7 +2,7 @@ Befunge is a self-modifying, stack-based, multi-dimensional language. It is simi
 
 \subsection{Origin}
 
-Befunge was invented in 1993 by Chris Pressey, and is believed to be the first two-dimensional esoteric programming language. Pressey's motivation was to create a language which was as difficult to compile as possible. Not only the multi-dimensionality complicate the compilation process, but also Befunge's ability to modify its own source code. Befunge's stack-based computational model was inspired by Forth. According to Pressey \cite{pressey_coleman}, the name “Befunge” was originally a mistyping of “before”, typed by Curtis Coleman in a BBS chat system at 4AM.
+Befunge was invented in 1993 by Chris Pressey, and is believed to be the first two-dimensional esoteric programming language. Pressey's motivation was to create a language which was as difficult to compile as possible. Not only the multi-dimensionality complicate the compilation process, but also Befunge's ability to modify its own source code. Befunge's stack-based computational model was inspired by Forth, a programming language relying heavily on a data stack and on reverse Polish notation. According to Pressey \cite{pressey_coleman}, the name “Befunge” was originally a mistyping of “before”, typed by Curtis Coleman in a BBS chat system at 4AM.
 
 \subsection{Description}
 
@@ -16,7 +16,7 @@ Befunge also maintains a stack of values, which can be manipulated in various wa
     \item[\texttt{`}] Pop two values, if the first one is smaller, push 1, otherwise 0.
     \item[\texttt{>} \texttt{<} \texttt{\textasciicircum} \texttt{v}] Move the pointer to the right/left/up/down.
     \item[\texttt{?}] Move the pointer in a random direction.
-    \item[\texttt{\_}] Pop a value it it is 0, move right, otherwise left.
+    \item[\texttt{\_}] Pop a value if it is 0, move right, otherwise left.
     \item[\texttt{|}] Pop a value it it is 0, move down, otherwise up.
     \item[\texttt{"}] Turn on stringmode: Until the next “\texttt{"}”, the values of the \ascii{} characters will be pushed.
     \item[\texttt{:}] Duplicate the top stack value.
@@ -48,7 +48,7 @@ Note that as calculations are done on the stack, they must be written down in po
 
 \subsection{Example}
 
-The following program reads characters from the standard input, and performs the ROT13 operation on them, which moves letters by 13 places forward in the alphabet, wrapping from Z back to A. Lowercase and uppercase letters are moved separately. Applying ROT13 to a text will restore the original. This operation is sometimes used in forums to hide spoilers from plain view, while making it trivial to en- and decode it.
+The following program reads characters from the standard input, and performs the ROT13 operation on them, which moves letters by 13 places forward in the alphabet, wrapping from Z back to A. Lowercase and uppercase letters are moved separately. Applying ROT13 to a text twice will restore the original. This operation is sometimes used in forums to hide spoilers from plain view, while making it trivial to en- and decode it.
 
 \lstinputlisting[frame=tbrl,basicstyle=\ttfamily\footnotesize]{befunge/rot13.bf}
 
