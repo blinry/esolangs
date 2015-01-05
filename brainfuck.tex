@@ -84,10 +84,6 @@ Whereas the general idea assumes an infinitely long tape, actual implementations
 The size of a cell was one byte in the original implementation, wrapping around to 255 when subtracting from 0, and many implementations follow that design. Others use 16- or 32-bit numbers, or even signed numbers, allowing the cells to have negative values.
 Another implementation difference is about what happens when a Brainfuck programs wants to read a byte, but there is no more input---for example, because the input was a file which has reached the end-of-file condition. In many applications, it is important to know that there will be no more input. Müller's implementation leaves the current cell unchanged in this case, others set it to 0, others to -1 (this requires cells which are larger than bytes).
 
-\subsection{Significance}
-
-Nowadays, Brainfuck is probably the best-known esoteric programming language. It is a common programming exercise to implement a Brainfuck interpreter or compiler in another language.
-
 \label{pprimeprime}
 
 Interestingly, Brainfuck had a much earlier predecessor: In 1964, the theoretical computer scientist Corrado Böhm designed the language $\mathcal{P}''$, to describe a specific family of Turing machines \cite{bohm1964family}. Böhm showed that this language was Turing-complete long before Brainfuck was implemented. Programs in $\mathcal{P}''$ consist of words over the alphabet $\{R, \lambda, (, )\}$. $\mathcal{P}''$ operates on a left-infinite tape, which can contain symbols of an alphabet $\{a_0, a_1, \dots, a_n\}$. Initially, each memory cell contains $a_0$, the \emph{blank symbol}. The symbols' semantics are as follows:
@@ -109,6 +105,10 @@ Each Brainfuck program can be translated  to a $\mathcal{P}''$ program using the
 \end{align*}
 
 That is, to perform a Brainfuck increment, increment and move left, then move right. To decrement, increment the current symbol $n$ times, until it “wraps around” and comes to halt one symbol before it started. To move left, “decrement” the cell, then perform a $\lambda$ operation.
+
+\subsection{Significance}
+
+Nowadays, Brainfuck is probably the best-known esoteric programming language in the world. It is a common programming exercise to implement a Brainfuck interpreter or compiler in another language. There is a vast number of Brainfuck programs, including an award-winning text adventure \cite{ripley2005lost}.
 
 %\subsection{OISCs}
 %
