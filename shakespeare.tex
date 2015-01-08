@@ -7,7 +7,6 @@ The Shakespeare Programming Language (originally SPL, but we will refer to it he
 \subsection{Description}
 
 According to the authors, Shakespeare “combines the expressiveness of BASIC with the user-friendliness of assembly language”. It does not support explicit loop constructions, the programmer has resort to labels and goto-like operations instead. We will now describe the structure of a Shakespeare program:
-
 The text up to the first period is the program's title. It is purely aesthetic and is ignored by the compiler. The next section is a list of all characters in the play, which in Shakespeare's are equivalent to variables. A character “declaration” consists of a name (which must be an actual character in one of Shakespeare's plays), followed by a description and a period. The rest of the program is divided into acts and scenes, which are numbered with roman numerals. These numerals act as labels which can be jumped to using goto statements, as we will explain in a moment.
 
 Characters can enter or leave the stage, which is done with the following statement:
@@ -24,13 +23,13 @@ Characters can talk to each other when they are on the stage. To avoid ambiguiti
     \texttt{warm peaceful summer's day.}
 \end{quotation}
 
-The “\texttt{as pretty as}” part is optional and has no semantic, “\texttt{summer's day}” is the positive noun (with a value of 1), multiplied with 2 two times. To output a character's numerical value, the other character says:
+The “\texttt{as pretty as}” part is optional and has no semantic, “\texttt{summer's day}” is the positive noun (with a value of 1), multiplied with 2 two times (because of the two adjectives “\texttt{warm}” and “\texttt{peaceful}”). To output a character's numerical value, the other character says:
 
 \begin{quotation}
     \texttt{Open your heart!}
 \end{quotation}
 
-And to print the correspondent \ascii{} character, one would use this phrase:
+And to print the corresponding \ascii{} character, one would use this phrase:
 
 \begin{quotation}
     \texttt{Speak your mind!}
@@ -80,19 +79,19 @@ The rest of the program is divided into three scenes: In Scene I, Mercutio assig
 
 After that, Juliet assigns a 0 to Romeo, whereas he makes her output her value and pushes his own value on her stack.
 
-\lstinputlisting{shakespeare/part2.spl}
+\lstinputlisting[firstnumber=6]{shakespeare/part2.spl}
 
 In Scene II, Romeo compares his value to Mercutio's, and if his is greater, he skips to scene IV where the program terminates. Otherwise, he makes Mercutio output a space character (“\texttt{Speak your mind}”), while Mercutio increments him ($\text{“\texttt{stone wall}”} = 1$) and pushes the new value onto Romeo's stack.
 
-\lstinputlisting{shakespeare/part3.spl}
+\lstinputlisting[firstnumber=26]{shakespeare/part3.spl}
 
 In Scene III, Juliet copies her value to Romeo. Romeo then pops the other Fibonacci number from Juliet's stack (assigning it to her), adds the two together, makes her output this new number and pushes his number (the now second largest number) onto her stack. Juliet then restores his counter value.
 
-\lstinputlisting{shakespeare/part4.spl}
+\lstinputlisting[firstnumber=37]{shakespeare/part4.spl}
 
 Finally, Scene IV is pure prose, added to give an interesting ending.
 
-\lstinputlisting{shakespeare/part5.spl}
+\lstinputlisting[firstnumber=52]{shakespeare/part5.spl}
 
 \begin{io}
 Output:
@@ -103,9 +102,7 @@ Output:
 
 \subsection{Computational Class}
 
-Shakespeare can be shown to be Turing-complete by describing a method to execute Brainfuck programs in Shakespeare, using two characters, whose stacks emulate Brainfuck's tape, and using scenes and goto statements for loops \cite{stux2005shakespeare}.
-
-\newpage
+Shakespeare can be shown to be Turing-complete by describing a method to execute Brainfuck programs in Shakespeare, using two characters, whose stacks emulate Brainfuck's tape, and using scenes and goto statements for loops~\cite{stux2005shakespeare}.
 
 \subsection{Implementations}
 
