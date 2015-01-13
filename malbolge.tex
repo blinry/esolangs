@@ -85,7 +85,7 @@ Unfortunately, it is not really useful to explain how this code works, as it wou
 
 \subsection{Computational class}
 
-Olmstead mentioned in the initial specification that he thought Malbolge to be Turing complete, as it has sequential execution, and, as he conjectured, mechanisms to repeat code and to do conditional execution. Programs like Iizawa's “99 bottles of beer” suggest that this might be true (if ignoring the hard memory limit of 59049 trits).
+Olmstead mentioned in the initial specification that he thought Malbolge to be Turing-complete, as it has sequential execution, and, as he conjectured, mechanisms to repeat code and to do conditional execution. Programs like Iizawa's “99 bottles of beer” suggest that this might be true (if ignoring the hard memory limit of 59049 trits).
 
 \subsection{Implementations}
 
@@ -95,7 +95,7 @@ Olmstead's interpreter written in C \cite{olmstead1998malbolge} is the only rele
 
 Some time after releasing the specification for Malbolge, Olmstead worried that his language was \emph{too hard}\footnote{The most exciting program known at that time printed the number 666 and exited.}, and thus created another, easier language called \textbf{Dis} (\emph{Dis} is the city encompassing the lower circles of Dante's Hell, including \emph{Malebolge}). Dis works very similar to Malbolge, but differs in some aspects, which make programming easier: Dis does not en- and decrypt instructions before and after execution; it has a more humane crazy operation; it allows comments; and uninitialized memory cells are set to 0. For this language, Olmstead could indeed provide an example that copies its input to the output.
 
-As mentioned, the original Malbolge is not really Turing complete due to its hard memory limitations. \textbf{Malbolge Unshackled} is a Malbolge dialect created in 2007 by Ørjan Johansen, that attempts to lift that restriction: The memory cells in Malbolge Unshackled can store an unlimited number of trits. This modification requires some adaptions regarding how the operators work, but it does work out eventually. Furthermore, the I/O instructions operate on Unicode codepoints, not \ascii{} characters.
+As mentioned, the original Malbolge is not really Turing-complete due to its hard memory limitations. \textbf{Malbolge Unshackled} is a Malbolge dialect created in 2007 by Ørjan Johansen, that attempts to lift that restriction: The memory cells in Malbolge Unshackled can store an unlimited number of trits. This modification requires some adaptions regarding how the operators work, but it does work out eventually. Furthermore, the I/O instructions operate on Unicode codepoints, not \ascii{} characters.
 
 \subsection{Significance}
 
